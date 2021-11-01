@@ -1,0 +1,35 @@
+modLoader="javafml"
+loaderVersion="[34,)"
+license= "GNU LESSER GENERAL PUBLIC LICENSE"
+licenseURL= "https://github.com/LeoBeliik/ConvenientCuriosContainer/blob/master/LICENSE.txt"
+issueTrackerURL="https://github.com/LeoBeliik/ConvenientCuriosContainer/issues"
+[[mods]]
+modId="convenientcurioscontainer"
+version="${file.jarVersion}"
+displayName="Convenient Curios Container"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/ConvenientCuriosContainer"
+authors="LeoBeliik"
+logoFile="CCC_logo.png"
+description='''
+A convenient way to store your trinkets!
+This mod adds an item that allows you to store items
+that use the Curios API and equip / unequip them easily.
+'''
+[[dependencies.convenientcurioscontainer]]
+    modId="forge"
+    mandatory=true
+    versionRange="[34,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.convenientcurioscontainer]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.3,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.convenientcurioscontainer]]
+    modId="curios"
+    mandatory=true
+    versionRange = "[1.16.5-4.0,)"
+    ordering="NONE"
+    side="BOTH"

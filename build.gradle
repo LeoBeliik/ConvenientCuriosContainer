@@ -1,0 +1,108 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+version = "1.${modversion}-${mcversion}"
+group = 'com.LeoBeliik.convenientcurioscontainer' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'convenientcurioscontainer'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+minecraft {
+    mappings channel: "official", version: "${mapversion}"
+
+    runs {
+        client {
+
+            workingDirectory project.file('run')
+            // Recommended logging data for a userdev environment
+            //property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            //property 'forge.logging.console.level', 'debug'
+
+            mods {
+                convenientcurioscontainer {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            // Recommended logging data for a userdev environment
+            //property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            //property 'forge.logging.console.level', 'debug'
+
+            mods {
+                convenientcurioscontainer {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', 'convenientcurioscontainer', '--all', '--output', "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
+
+            mods {
+                convenientcurioscontainer {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    maven {
+        url = "https://maven.theillusivec4.top/"
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${mcversion}-${forgeversion}"
+    compile fg.deobf("top.theillusivec4.curios:curios-forge:${curiosversion}")
+}
+
+tasks.register("version_up") {
+    doLast {
+        def gp = file("gradle.properties")
+        gp.setText(gp.getText().replace("modversion = " + "${modversion}", "modversion = " + ("${modversion}".toInteger() + 1).toString()))
+    }
+}
+
+// Example for how to get properties into the manifest for reading by the runtime..
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : "ConvenientCuriosContainer",
+                "Specification-Vendor"    : "Leobeliik",
+                "Specification-Version"   : "${modversion}_forge-${mcversion}",
+                "Implementation-Title"    : "ConvenientCuriosContainer",
+                "Implementation-Version"  : "${modversion}_forge-${mcversion}",
+                "Implementation-Vendor"   : "LeoBeliik",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
