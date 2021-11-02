@@ -29,7 +29,6 @@ public class CuriosContainerItem extends Item {
         super(properties);
     }
 
-    @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         return new CuriosContainerCapabilityProvider();
@@ -40,10 +39,6 @@ public class CuriosContainerItem extends Item {
     @Override
     public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (!(itemStack.getItem() instanceof CuriosContainerItem)) {
-            return ActionResult.pass(itemStack);
-        }
-        CuriosContainerItem item = (CuriosContainerItem) itemStack.getItem();
         INamedContainerProvider ccProvider = new INamedContainerProvider() {
             @Nonnull
             @Override
@@ -54,7 +49,7 @@ public class CuriosContainerItem extends Item {
             @Nonnull
             @Override
             public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-                return new CuriosContainerContainer(id, inventory, item.getItemHandler(itemStack));
+                return new CuriosContainerContainer(id, inventory, getItemHandler(itemStack));
             }
         };
         if (!level.isClientSide()) {

@@ -3,6 +3,7 @@ package com.LeoBeliik.convenientcurioscontainer.gui;
 import com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer;
 import com.LeoBeliik.convenientcurioscontainer.gui.slots.ConvenientCosmeticSlots;
 import com.LeoBeliik.convenientcurioscontainer.gui.slots.ConvenientCurioSlots;
+import com.LeoBeliik.convenientcurioscontainer.items.CuriosContainerItem;
 import com.LeoBeliik.convenientcurioscontainer.networking.Network;
 import com.LeoBeliik.convenientcurioscontainer.networking.ScrollMessage;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,12 +13,12 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
+
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -28,7 +29,6 @@ import java.util.stream.Collectors;
 public class CuriosContainerContainer extends Container {
     private final ItemStackHandler ccItemHandler;
     private final PlayerEntity player;
-    private final NonNullList<ItemStack> items = NonNullList.create();
     private final List<ConvenientCurioSlots> curioSlots = new ArrayList<>();
     private final List<ConvenientCosmeticSlots> cosmeticSlots = new ArrayList<>();
     private List<Boolean> hasCosmetic = new ArrayList<>();
@@ -69,7 +69,17 @@ public class CuriosContainerContainer extends Container {
         }
         //add toolbar slot
         for (int i = 0; i < 9; i++) {
-            addSlot(new Slot(inventory, i, i * 18 + 8, 162));
+            if (inventory.getItem(i).getItem() instanceof CuriosContainerItem) {
+                addSlot(new Slot(inventory, i, i * 18 + 8, 162) {
+                    @ParametersAreNonnullByDefault
+                    @Override
+                    public boolean mayPickup(PlayerEntity player) {
+                        return false;
+                    }
+                });
+            } else {
+                addSlot(new Slot(inventory, i, i * 18 + 8, 162));
+            }
         }
     }
 

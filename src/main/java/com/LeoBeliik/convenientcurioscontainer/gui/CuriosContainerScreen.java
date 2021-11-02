@@ -9,9 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import top.theillusivec4.curios.common.inventory.CosmeticCurioSlot;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
-
 import javax.annotation.ParametersAreNonnullByDefault;
-
 import static com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
 public class CuriosContainerScreen extends ContainerScreen<CuriosContainerContainer> {
@@ -24,8 +22,8 @@ public class CuriosContainerScreen extends ContainerScreen<CuriosContainerContai
 
     public CuriosContainerScreen(CuriosContainerContainer container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);
-        this.imageHeight = 114 + 72;
-        this.inventoryLabelY = this.imageHeight - 94;
+        imageHeight = 186;
+        inventoryLabelY = 92;
     }
 
     @ParametersAreNonnullByDefault
@@ -59,7 +57,7 @@ public class CuriosContainerScreen extends ContainerScreen<CuriosContainerContai
         renderCurios(ms);
     }
 
-    @Override
+    @Override //TODO scroll by dragging the scrollbar
     public boolean mouseDragged(double mouseX, double mouseY, int mouseDragged, double xAmount, double yAmount) {
         return super.mouseDragged(mouseX, mouseY, mouseDragged, xAmount, yAmount);
     }
@@ -69,11 +67,11 @@ public class CuriosContainerScreen extends ContainerScreen<CuriosContainerContai
         //render top and bottom
         if (menu.curiosSize() > 0) {
             int barHeight = Math.min(menu.curiosSize(), 9) * 18 + 12;
-            blit(ms, leftPos - 24, topPos + 5, 186, 0, 25, 6);
-            blit(ms, leftPos - 24, topPos + barHeight, 186, 4, 25, 7);
+            blit(ms, leftPos - 24, topPos + 5, 186, 0, 25, 6); //top
+            blit(ms, leftPos - 24, topPos + barHeight, 186, 4, 25, 7); //bottom
             if (menu.hasCosmeticColumn()) {
-                blit(ms, leftPos - 43, topPos + 5, 186, 0, 24, 6);
-                blit(ms, leftPos - 43, topPos + barHeight, 186, 4, 24, 7);
+                blit(ms, leftPos - 43, topPos + 5, 186, 0, 24, 6); //top
+                blit(ms, leftPos - 43, topPos + barHeight, 186, 4, 24, 7); //bottom
             }
         }//blit(matrix, x, y, xtexture, ytexture, width, height)
 
@@ -84,7 +82,7 @@ public class CuriosContainerScreen extends ContainerScreen<CuriosContainerContai
                 blit(ms, leftPos + slot.x - 6, topPos + slot.y - 2, 186, 11, 23, 19);
             } else if (slot instanceof CurioSlot) {
                 blit(ms, leftPos + slot.x - 6, topPos + slot.y - 2, 186, 11, 25, 19);
-                if (menu.hasCosmeticColumn()) { //render "empty" bg
+                if (menu.hasCosmeticColumn()) { //render "empty" bg if has no cosmetic slot
                     blit(ms, leftPos + slot.x - 25, topPos + slot.y - 2, 186, 31, 23, 19);
                 }
             }
@@ -93,10 +91,10 @@ public class CuriosContainerScreen extends ContainerScreen<CuriosContainerContai
         //render scrollbar
         if (menu.curiosSize() > 9) {
             int barxPos = menu.hasCosmeticColumn() ? leftPos - 48 : leftPos - 29;
-            blit(ms, barxPos, topPos + 5, 176, 0, 10, 176);
+            blit(ms, barxPos, topPos + 5, 176, 0, 10, 176); //bar
             int scrollXPos = menu.hasCosmeticColumn() ? leftPos - 44 : leftPos - 25;
             int scrollYPos = topPos + (currentScroll == 0 ? 12 : Math.min(166 / (menu.curiosSize() - 9) * currentScroll + 12, 166)); //Maths!
-            blit(ms, scrollXPos, scrollYPos, 186, 51, 5, 9);
+            blit(ms, scrollXPos, scrollYPos, 186, 51, 5, 9); //scroll
         }
         //blit(matrix, x, y, xtexture, ytexture, width, height)
     }
