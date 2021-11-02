@@ -1,7 +1,7 @@
 package com.LeoBeliik.convenientcurioscontainer.items;
 
-import com.LeoBeliik.convenientcurioscontainer.capabilities.CuriosContainerCapabilityProvider;
-import com.LeoBeliik.convenientcurioscontainer.gui.CuriosContainerContainer;
+import com.LeoBeliik.convenientcurioscontainer.capabilities.ConvenientCapabilityProvider;
+import com.LeoBeliik.convenientcurioscontainer.gui.ConvenientContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -23,15 +23,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-public class CuriosContainerItem extends Item {
+public class ConvenientItem extends Item {
 
-    public CuriosContainerItem(Properties properties) {
+    public ConvenientItem(Properties properties) {
         super(properties);
     }
 
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new CuriosContainerCapabilityProvider();
+        return new ConvenientCapabilityProvider();
     }
 
     @ParametersAreNonnullByDefault
@@ -49,7 +49,7 @@ public class CuriosContainerItem extends Item {
             @Nonnull
             @Override
             public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-                return new CuriosContainerContainer(id, inventory, getItemHandler(itemStack));
+                return new ConvenientContainer(id, inventory, getItemHandler(itemStack));
             }
         };
         if (!level.isClientSide()) {

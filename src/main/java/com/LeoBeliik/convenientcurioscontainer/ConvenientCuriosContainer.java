@@ -1,8 +1,8 @@
 package com.LeoBeliik.convenientcurioscontainer;
 
-import com.LeoBeliik.convenientcurioscontainer.gui.CuriosContainerContainer;
-import com.LeoBeliik.convenientcurioscontainer.gui.CuriosContainerScreen;
-import com.LeoBeliik.convenientcurioscontainer.items.CuriosContainerItem;
+import com.LeoBeliik.convenientcurioscontainer.gui.ConvenientContainer;
+import com.LeoBeliik.convenientcurioscontainer.gui.ConvenientScreen;
+import com.LeoBeliik.convenientcurioscontainer.items.ConvenientItem;
 import com.LeoBeliik.convenientcurioscontainer.networking.Network;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.inventory.container.ContainerType;
@@ -31,7 +31,7 @@ public class ConvenientCuriosContainer {
     }
 
     private void clientRegistry(final FMLClientSetupEvent event) {
-        ScreenManager.register(CURIOS_CONTAINER_CONTAINER.get(), CuriosContainerScreen::new);
+        ScreenManager.register(CURIOS_CONTAINER_CONTAINER.get(), ConvenientScreen::new);
     }
 
     private void Registry() {
@@ -41,8 +41,8 @@ public class ConvenientCuriosContainer {
     }
 
     public static final RegistryObject<Item> CURIOS_CONTAINER_ITEM = ITEMS.register("curios_container", () ->
-            new CuriosContainerItem(new Item.Properties().tab(ItemGroup.TAB_FOOD).stacksTo(1)));
+            new ConvenientItem(new Item.Properties().tab(ItemGroup.TAB_FOOD).stacksTo(1)));
 
-    public static final RegistryObject<ContainerType<CuriosContainerContainer>> CURIOS_CONTAINER_CONTAINER = CONTAINERS.register(
-            "curios_container", () -> IForgeContainerType.create(CuriosContainerContainer::new));
+    public static final RegistryObject<ContainerType<ConvenientContainer>> CURIOS_CONTAINER_CONTAINER = CONTAINERS.register(
+            "curios_container", () -> IForgeContainerType.create(ConvenientContainer::new));
 }

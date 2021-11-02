@@ -1,6 +1,6 @@
 package com.LeoBeliik.convenientcurioscontainer.networking;
 
-import com.LeoBeliik.convenientcurioscontainer.gui.CuriosContainerContainer;
+import com.LeoBeliik.convenientcurioscontainer.gui.ConvenientContainer;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.network.PacketBuffer;
@@ -28,8 +28,8 @@ public class ScrollMessage {
             ServerPlayerEntity player = ctx.get().getSender();
             if (player != null) {
                 Container container = player.containerMenu;
-                if (container instanceof CuriosContainerContainer) {
-                    ((CuriosContainerContainer) container).scroll(direction);
+                if (container instanceof ConvenientContainer) {
+                    ((ConvenientContainer) container).scroll(direction);
                 }
             }
         });

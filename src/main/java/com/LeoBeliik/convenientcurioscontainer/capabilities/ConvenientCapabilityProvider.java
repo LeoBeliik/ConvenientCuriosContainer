@@ -11,7 +11,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CuriosContainerCapabilityProvider implements ICapabilitySerializable<INBT> {
+public class ConvenientCapabilityProvider implements ICapabilitySerializable<INBT> {
     private IItemHandler ccInventory;
     private final LazyOptional<IItemHandler> lazyInventory = LazyOptional.of(this::getCachedInventory);
 

@@ -12,7 +12,7 @@ import top.theillusivec4.curios.common.inventory.CurioSlot;
 import javax.annotation.ParametersAreNonnullByDefault;
 import static com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
-public class CuriosContainerScreen extends ContainerScreen<CuriosContainerContainer> {
+public class ConvenientScreen extends ContainerScreen<ConvenientContainer> {
 
     private static final ResourceLocation CONTAINER_BACKGROUND = new ResourceLocation(MODID, "textures/gui/curios_container.png");
     private static final Minecraft minecraft = Minecraft.getInstance();
@@ -20,7 +20,7 @@ public class CuriosContainerScreen extends ContainerScreen<CuriosContainerContai
     private final int ySize = 186;
     private int currentScroll = 0;
 
-    public CuriosContainerScreen(CuriosContainerContainer container, PlayerInventory inventory, ITextComponent title) {
+    public ConvenientScreen(ConvenientContainer container, PlayerInventory inventory, ITextComponent title) {
         super(container, inventory, title);
         imageHeight = 186;
         inventoryLabelY = 92;

@@ -3,7 +3,7 @@ package com.LeoBeliik.convenientcurioscontainer.gui;
 import com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer;
 import com.LeoBeliik.convenientcurioscontainer.gui.slots.ConvenientCosmeticSlots;
 import com.LeoBeliik.convenientcurioscontainer.gui.slots.ConvenientCurioSlots;
-import com.LeoBeliik.convenientcurioscontainer.items.CuriosContainerItem;
+import com.LeoBeliik.convenientcurioscontainer.items.ConvenientItem;
 import com.LeoBeliik.convenientcurioscontainer.networking.Network;
 import com.LeoBeliik.convenientcurioscontainer.networking.ScrollMessage;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CuriosContainerContainer extends Container {
+public class ConvenientContainer extends Container {
     private final ItemStackHandler ccItemHandler;
     private final PlayerEntity player;
     private final List<ConvenientCurioSlots> curioSlots = new ArrayList<>();
@@ -34,11 +34,11 @@ public class CuriosContainerContainer extends Container {
     private List<Boolean> hasCosmetic = new ArrayList<>();
     private boolean cosmeticColumn;
 
-    public CuriosContainerContainer(int windowId, PlayerInventory playerInv, PacketBuffer data) {
+    public ConvenientContainer(int windowId, PlayerInventory playerInv, PacketBuffer data) {
         this(windowId, playerInv, new ItemStackHandler(36));
     }
 
-    public CuriosContainerContainer(int id, PlayerInventory inventory, ItemStackHandler ccItemHandler) {
+    public ConvenientContainer(int id, PlayerInventory inventory, ItemStackHandler ccItemHandler) {
         super(ConvenientCuriosContainer.CURIOS_CONTAINER_CONTAINER.get(), id);
         this.ccItemHandler = ccItemHandler;
         this.player = inventory.player;
@@ -69,7 +69,7 @@ public class CuriosContainerContainer extends Container {
         }
         //add toolbar slot
         for (int i = 0; i < 9; i++) {
-            if (inventory.getItem(i).getItem() instanceof CuriosContainerItem) {
+            if (inventory.getItem(i).getItem() instanceof ConvenientItem) {
                 addSlot(new Slot(inventory, i, i * 18 + 8, 162) {
                     @ParametersAreNonnullByDefault
                     @Override
