@@ -1,4 +1,4 @@
-<img align="left" width="140" height="100" src="src/main/resources/ccc_logo.png">
+<img align="left" width="140" height="100" src="src/main/resources/CCC_logo.png">
 <h1> Convenient Curios Container Minecraft mod</h1>
 <br/>
 
@@ -23,6 +23,7 @@
 </p>
   
   <h5 align="center"><b>This Mod needs <a href= https://files.minecraftforge.net/net/minecraftforge/forge alt="FORGE"> FORGE</a> to work.</b></h5>
+  
   ## Description: 
   <p align="center">
   Lot of mods nowadays add some type of trinkets to make the game more interesting, the problem I always found with this is that managing the trinkets can be annoying.
