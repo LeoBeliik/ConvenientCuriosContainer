@@ -1,4 +1,3 @@
-<img align="left" width="80" height="80" src="src/main/resources/ccc_logo.png">
 <h1 align="center"> Convenient Curios Container Minecraft mod</h1>
 
 <br/>
