@@ -28,19 +28,19 @@
   
   ## Description: 
   <p align="center">
-  **Lot of mods nowadays add some type of trinkets to make the game more interesting, the problem I always found with this is that managing the trinkets can be annoying.**
+  <b>Lot of mods nowadays add some type of trinkets to make the game more interesting, the problem I always found with this is that managing the trinkets can be annoying.</b>
   </p>
-  **1**.- You open your backpack / shulker / whatevs, take the trinket and move it to your inventory
+  <b>1</b>.- You open your backpack / shulker / whatevs, take the trinket and move it to your inventory
   
-  **2**.- Close the backpack / shulker / whatevs and open the Curios inventory
+  <b>2</b>.- Close the backpack / shulker / whatevs and open the Curios inventory
   
-  **3**.- Equip the trinket
+  <b>3</b>.- Equip the trinket
   
-  **4**.- if you had one equipped already you'll have to put it in the backpack / shulker / whatevs so repeat the firs 2 steps in reverse.
+  <b>4</b>.- if you had one equipped already you'll have to put it in the backpack / shulker / whatevs so repeat the firs 2 steps in reverse.
   
-  **Convenient Curios Container tries to solve this "problem" by giving you an easy access to the container and the Curios at the same time!**
+  <b>Convenient Curios Container tries to solve this "problem" by giving you an easy access to the container and the Curios at the same time!</b>
   <p align="center">
-  **It also comes with easy transfer for your Convenience!**
+  <b>It also comes with easy transfer for your Convenience!</b>
   
   </p>
   
