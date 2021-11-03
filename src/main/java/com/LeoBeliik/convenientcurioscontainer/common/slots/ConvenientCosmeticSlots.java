@@ -6,7 +6,6 @@ import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 import top.theillusivec4.curios.common.inventory.CosmeticCurioSlot;
 
 public class ConvenientCosmeticSlots extends CosmeticCurioSlot {
-    private PlayerEntity player;
     private IDynamicStackHandler handler;
     private int index;
     private String identifier;
@@ -17,16 +16,11 @@ public class ConvenientCosmeticSlots extends CosmeticCurioSlot {
 
     public ConvenientCosmeticSlots(PlayerEntity player, IDynamicStackHandler handler, int index, String identifier, int xPosition, int yPosition) {
         super(player, handler, index, identifier, xPosition, yPosition);
-        this.player = player;
         this.handler = handler;
         this.index = index;
         this.identifier = identifier;
         this.x = xPosition;
         this.y = yPosition;
-    }
-
-    public PlayerEntity getPlayer() {
-        return player;
     }
 
     public IDynamicStackHandler getHandler() {
