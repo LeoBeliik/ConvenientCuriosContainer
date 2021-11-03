@@ -1,8 +1,8 @@
 package com.LeoBeliik.convenientcurioscontainer.common;
 
 import com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer;
-import com.LeoBeliik.convenientcurioscontainer.gui.slots.ConvenientCosmeticSlots;
-import com.LeoBeliik.convenientcurioscontainer.gui.slots.ConvenientCurioSlots;
+import com.LeoBeliik.convenientcurioscontainer.common.slots.ConvenientCosmeticSlots;
+import com.LeoBeliik.convenientcurioscontainer.common.slots.ConvenientCurioSlots;
 import com.LeoBeliik.convenientcurioscontainer.items.ConvenientItem;
 import com.LeoBeliik.convenientcurioscontainer.networking.Network;
 import com.LeoBeliik.convenientcurioscontainer.networking.ScrollMessage;

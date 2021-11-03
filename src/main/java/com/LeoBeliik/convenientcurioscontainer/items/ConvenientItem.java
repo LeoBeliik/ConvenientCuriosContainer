@@ -1,7 +1,7 @@
 package com.LeoBeliik.convenientcurioscontainer.items;
 
-import com.LeoBeliik.convenientcurioscontainer.common.ConvenientStackHandler;
 import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
+import com.LeoBeliik.convenientcurioscontainer.common.ConvenientStackHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -18,7 +18,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -41,7 +40,6 @@ public class ConvenientItem extends Item {
             for (int i = 0; i < stacks.getSlots(); i++) {
                 handler.setStackInSlot(i, stacks.getStackInSlot(i));
             }
-
             nbt.remove("Parent");
         }
         return handler;

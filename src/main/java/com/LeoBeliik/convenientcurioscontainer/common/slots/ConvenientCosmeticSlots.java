@@ -1,11 +1,11 @@
-package com.LeoBeliik.convenientcurioscontainer.gui.slots;
+package com.LeoBeliik.convenientcurioscontainer.common.slots;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.NonNullList;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
-import top.theillusivec4.curios.common.inventory.CurioSlot;
+import top.theillusivec4.curios.common.inventory.CosmeticCurioSlot;
 
-public class ConvenientCurioSlots extends CurioSlot {
+public class ConvenientCosmeticSlots extends CosmeticCurioSlot {
     private PlayerEntity player;
     private IDynamicStackHandler handler;
     private int index;
@@ -14,15 +14,15 @@ public class ConvenientCurioSlots extends CurioSlot {
     private int y;
     private NonNullList<Boolean> renders;
 
-    public ConvenientCurioSlots(PlayerEntity player, IDynamicStackHandler handler, int index, String identifier, int xPosition, int yPosition, NonNullList<Boolean> renders) {
-        super(player, handler, index, identifier, xPosition, yPosition, renders);
+
+    public ConvenientCosmeticSlots(PlayerEntity player, IDynamicStackHandler handler, int index, String identifier, int xPosition, int yPosition) {
+        super(player, handler, index, identifier, xPosition, yPosition);
         this.player = player;
         this.handler = handler;
         this.index = index;
         this.identifier = identifier;
         this.x = xPosition;
         this.y = yPosition;
-        this.renders = renders;
     }
 
     public PlayerEntity getPlayer() {
@@ -52,9 +52,5 @@ public class ConvenientCurioSlots extends CurioSlot {
 
     public NonNullList<Boolean> getRenders() {
         return renders;
-    }
-
-    public void setRenders(NonNullList<Boolean> renders) {
-        this.renders = renders;
     }
 }

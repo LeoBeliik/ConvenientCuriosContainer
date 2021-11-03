@@ -41,7 +41,7 @@ public class ConvenientCuriosContainer {
     }
 
     public static final RegistryObject<Item> CURIOS_CONTAINER_ITEM = ITEMS.register("curios_container", () ->
-            new ConvenientItem(new Item.Properties().tab(ItemGroup.TAB_FOOD).stacksTo(1)));
+            new ConvenientItem(new Item.Properties().tab(ItemGroup.TAB_MISC).stacksTo(1)));
 
     public static final RegistryObject<ContainerType<ConvenientContainer>> CURIOS_CONTAINER_CONTAINER = CONTAINERS.register(
             "curios_container", () -> IForgeContainerType.create(ConvenientContainer::new));

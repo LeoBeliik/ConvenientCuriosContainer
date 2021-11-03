@@ -4,10 +4,14 @@ import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.*;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 import top.theillusivec4.curios.common.inventory.CosmeticCurioSlot;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -16,6 +20,7 @@ import static com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer.
 public class ConvenientScreen extends ContainerScreen<ConvenientContainer> {
 
     private static final ResourceLocation CONTAINER_BACKGROUND = new ResourceLocation(MODID, "textures/gui/curios_container.png");
+    private static final IFormattableTextComponent INFO = (new TranslationTextComponent("container_info")).withStyle(TextFormatting.GRAY);
     private static final Minecraft minecraft = Minecraft.getInstance();
     private final int xSize = 176;
     private final int ySize = 186;
@@ -30,9 +35,12 @@ public class ConvenientScreen extends ContainerScreen<ConvenientContainer> {
     @ParametersAreNonnullByDefault
     @Override
     public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(ms);
+        renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
-        this.renderTooltip(ms, mouseX, mouseY);
+        renderTooltip(ms, mouseX, mouseY);
+        if (mouseX > leftPos + 168 && mouseX < leftPos + 172 && mouseY > topPos + 3 && mouseY < topPos + 9) {
+            renderTooltip(ms, INFO, mouseX, mouseY);
+        }
     }
 
     @Override
