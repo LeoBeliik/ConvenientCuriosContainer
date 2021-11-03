@@ -1,7 +1,7 @@
 package com.LeoBeliik.convenientcurioscontainer.items;
 
-import com.LeoBeliik.convenientcurioscontainer.capabilities.ConvenientCapabilityProvider;
-import com.LeoBeliik.convenientcurioscontainer.gui.ConvenientContainer;
+import com.LeoBeliik.convenientcurioscontainer.common.ConvenientStackHandler;
+import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -31,7 +31,20 @@ public class ConvenientItem extends Item {
 
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new ConvenientCapabilityProvider();
+        ConvenientStackHandler handler = new ConvenientStackHandler(stack, 36);
+
+        if (nbt != null && nbt.contains("Parent")) {
+            CompoundNBT itemData = nbt.getCompound("Parent");
+            ItemStackHandler stacks = new ItemStackHandler();
+            stacks.deserializeNBT(itemData);
+
+            for (int i = 0; i < stacks.getSlots(); i++) {
+                handler.setStackInSlot(i, stacks.getStackInSlot(i));
+            }
+
+            nbt.remove("Parent");
+        }
+        return handler;
     }
 
     @ParametersAreNonnullByDefault
@@ -59,7 +72,8 @@ public class ConvenientItem extends Item {
     }
 
     private ItemStackHandler getItemHandler(ItemStack stack) {
-        return (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(new ItemStackHandler(36));
+        return (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                .orElse(new ConvenientStackHandler(stack, 36));
     }
 
 }

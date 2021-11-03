@@ -1,6 +1,6 @@
 package com.LeoBeliik.convenientcurioscontainer.networking;
 
-import com.LeoBeliik.convenientcurioscontainer.gui.ConvenientContainer;
+import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.network.PacketBuffer;

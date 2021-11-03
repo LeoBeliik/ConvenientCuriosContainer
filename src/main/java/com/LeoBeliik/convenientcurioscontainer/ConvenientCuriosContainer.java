@@ -1,6 +1,6 @@
 package com.LeoBeliik.convenientcurioscontainer;
 
-import com.LeoBeliik.convenientcurioscontainer.gui.ConvenientContainer;
+import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
 import com.LeoBeliik.convenientcurioscontainer.gui.ConvenientScreen;
 import com.LeoBeliik.convenientcurioscontainer.items.ConvenientItem;
 import com.LeoBeliik.convenientcurioscontainer.networking.Network;

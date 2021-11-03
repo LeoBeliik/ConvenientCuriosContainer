@@ -1,4 +1,4 @@
-package com.LeoBeliik.convenientcurioscontainer.gui;
+package com.LeoBeliik.convenientcurioscontainer.common;
 
 import com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer;
 import com.LeoBeliik.convenientcurioscontainer.gui.slots.ConvenientCosmeticSlots;

@@ -1,5 +1,6 @@
 package com.LeoBeliik.convenientcurioscontainer.gui;
 
+import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
