@@ -8,9 +8,9 @@
 <br/>
 <p align="center">
   <a href="https://www.curseforge.com/minecraft/mc-mods/convenient-curios-container" alt="Downloads">
-        <img src="http://cf.way2muchnoise.eu/363363.svg" /> </a>
+        <img src="http://cf.way2muchnoise.eu/544033.svg" /> </a>
   <a href="https://www.curseforge.com/minecraft/mc-mods/convenient-curios-container" alt="Versions">
-        <img src="http://cf.way2muchnoise.eu/versions/363363.svg" /> </a>  
+        <img src="http://cf.way2muchnoise.eu/versions/544033.svg" /> </a>  
 </p>
 <p align="center">
   <a href="https://github.com/LeoBeliik/ConvenientCuriosContainer/issues" alt="Issues">
