@@ -1,8 +1,5 @@
 <h1 align="center"> Convenient Curios Container Minecraft mod</h1>
-
 <br/>
-
----
 <h3 align="center"> This mod allows you to easily manage your Curios items. </h3> 
 <br/>
 <p align="center">
