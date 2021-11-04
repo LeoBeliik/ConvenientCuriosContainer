@@ -26,11 +26,12 @@
   <p align="center">
   <b>Lot of mods nowadays add some type of trinkets to make the game more interesting, the problem I always found with this is that managing the trinkets can be annoying.</b>
   </p>
-  <b>1</b>.- You open your backpack / shulker / whatevs, take the trinket and move it to your inventory
   
-  <b>2</b>.- Close the backpack / shulker / whatevs and open the Curios inventory
+  <b>1</b>.- You open your backpack / shulker / whatevs, take the trinket and move it to your inventory.
   
-  <b>3</b>.- Equip the trinket
+  <b>2</b>.- Close the backpack / shulker / whatevs and open the Curios inventory.
+  
+  <b>3</b>.- Equip the trinket.
   
   <b>4</b>.- if you had one equipped already you'll have to put it in the backpack / shulker / whatevs so repeat the firs 2 steps in reverse.
   
