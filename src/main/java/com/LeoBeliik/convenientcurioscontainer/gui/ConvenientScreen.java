@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -15,13 +14,13 @@ import top.theillusivec4.curios.common.inventory.CosmeticCurioSlot;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 
 import static com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
 public class ConvenientScreen extends AbstractContainerScreen<ConvenientContainer> {
 
     private static final ResourceLocation CONTAINER_BACKGROUND = new ResourceLocation(MODID, "textures/gui/curios_container.png");
-    private static final MutableComponent INFO = (new TranslatableComponent("container_info")).withStyle(ChatFormatting.GRAY);
     private final int xSize = 176;
     private final int ySize = 186;
     private int currentScroll = 0;
@@ -39,7 +38,12 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
         super.render(ms, mouseX, mouseY, partialTicks);
         renderTooltip(ms, mouseX, mouseY);
         if (mouseX > leftPos + 168 && mouseX < leftPos + 172 && mouseY > topPos + 3 && mouseY < topPos + 9) {
-            renderTooltip(ms, INFO, mouseX, mouseY);
+            //there has to be a better way to do this...
+            renderTooltip(ms,
+                    List.of(new TranslatableComponent("container_info").withStyle(ChatFormatting.GRAY),
+                            new TranslatableComponent("container_RMB").withStyle(ChatFormatting.GRAY),
+                            new TranslatableComponent("container_SRMB").withStyle(ChatFormatting.GRAY)),
+                    java.util.Optional.empty(), mouseX, mouseY);
         }
     }
 
