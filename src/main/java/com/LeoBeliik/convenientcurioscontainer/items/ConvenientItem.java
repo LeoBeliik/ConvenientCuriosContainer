@@ -2,20 +2,20 @@ package com.LeoBeliik.convenientcurioscontainer.items;
 
 import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
 import com.LeoBeliik.convenientcurioscontainer.common.ConvenientStackHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
@@ -29,11 +29,11 @@ public class ConvenientItem extends Item {
     }
 
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         ConvenientStackHandler handler = new ConvenientStackHandler(stack, 36);
 
         if (nbt != null && nbt.contains("Parent")) {
-            CompoundNBT itemData = nbt.getCompound("Parent");
+            CompoundTag itemData = nbt.getCompound("Parent");
             ItemStackHandler stacks = new ItemStackHandler();
             stacks.deserializeNBT(itemData);
 
@@ -48,25 +48,25 @@ public class ConvenientItem extends Item {
     @ParametersAreNonnullByDefault
     @Nonnull
     @Override
-    public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        INamedContainerProvider ccProvider = new INamedContainerProvider() {
+        MenuProvider ccProvider = new MenuProvider() {
             @Nonnull
             @Override
-            public ITextComponent getDisplayName() {
+            public Component getDisplayName() {
                 return itemStack.getHoverName();
             }
 
             @Nonnull
             @Override
-            public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
+            public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
                 return new ConvenientContainer(id, inventory, getItemHandler(itemStack));
             }
         };
         if (!level.isClientSide()) {
-            NetworkHooks.openGui((ServerPlayerEntity) player, ccProvider);
+            NetworkHooks.openGui((ServerPlayer) player, ccProvider);
         }
-        return ActionResult.success(itemStack);
+        return InteractionResultHolder.success(itemStack);
     }
 
     private ItemStackHandler getItemHandler(ItemStack stack) {

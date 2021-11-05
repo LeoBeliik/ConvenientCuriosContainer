@@ -1,10 +1,11 @@
 package com.LeoBeliik.convenientcurioscontainer.networking;
 
 import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
+
 import java.util.function.Supplier;
 
 public class ScrollMessage {
@@ -14,19 +15,19 @@ public class ScrollMessage {
         this.direction = direction;
     }
 
-    void encode(PacketBuffer buf) {
+    void encode(FriendlyByteBuf buf) {
         buf.writeInt(direction);
     }
 
-    static ScrollMessage decode(PacketBuffer buf) {
+    static ScrollMessage decode(FriendlyByteBuf buf) {
         return new ScrollMessage(buf.readInt());
     }
 
     boolean handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ServerPlayerEntity player = ctx.get().getSender();
+            ServerPlayer player = ctx.get().getSender();
             if (player != null) {
-                Container container = player.containerMenu;
+                AbstractContainerMenu container = player.containerMenu;
                 if (container instanceof ConvenientContainer) {
                     ((ConvenientContainer) container).scroll(direction);
                 }

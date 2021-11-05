@@ -1,9 +1,9 @@
 package com.LeoBeliik.convenientcurioscontainer.common;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
@@ -28,18 +28,18 @@ public class ConvenientStackHandler extends ItemStackHandler implements ICapabil
         this.size = size;
     }
 
-    private ListNBT getStackList() {
+    private ListTag getStackList() {
         String key = "convenient_inventory";
-        ListNBT list;
+        ListTag list;
 
         if (!stack.isEmpty() && stack.hasTag() && stack.getOrCreateTag().contains(key)) {
             list = stack.getOrCreateTag().getList(key, Constants.NBT.TAG_COMPOUND);
         } else {
-            stack.getOrCreateTag().put(key, list = new ListNBT());
+            stack.getOrCreateTag().put(key, list = new ListTag());
         }
 
         while (list.size() < size) {
-            list.add(new CompoundNBT());
+            list.add(new CompoundTag());
         }
         return list;
     }

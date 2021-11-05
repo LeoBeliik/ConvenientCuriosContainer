@@ -1,7 +1,7 @@
 package com.LeoBeliik.convenientcurioscontainer.common.slots;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.NonNullList;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 import top.theillusivec4.curios.common.inventory.CosmeticCurioSlot;
 
@@ -14,7 +14,7 @@ public class ConvenientCosmeticSlots extends CosmeticCurioSlot {
     private NonNullList<Boolean> renders;
 
 
-    public ConvenientCosmeticSlots(PlayerEntity player, IDynamicStackHandler handler, int index, String identifier, int xPosition, int yPosition) {
+    public ConvenientCosmeticSlots(Player player, IDynamicStackHandler handler, int index, String identifier, int xPosition, int yPosition) {
         super(player, handler, index, identifier, xPosition, yPosition);
         this.handler = handler;
         this.index = index;

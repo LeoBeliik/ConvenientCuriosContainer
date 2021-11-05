@@ -1,7 +1,7 @@
 package com.LeoBeliik.convenientcurioscontainer.common.slots;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.NonNullList;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
 
@@ -13,7 +13,7 @@ public class ConvenientCurioSlots extends CurioSlot {
     private int y;
     private NonNullList<Boolean> renders;
 
-    public ConvenientCurioSlots(PlayerEntity player, IDynamicStackHandler handler, int index, String identifier, int xPosition, int yPosition, NonNullList<Boolean> renders) {
+    public ConvenientCurioSlots(Player player, IDynamicStackHandler handler, int index, String identifier, int xPosition, int yPosition, NonNullList<Boolean> renders) {
         super(player, handler, index, identifier, xPosition, yPosition, renders);
         this.handler = handler;
         this.index = index;

@@ -1,31 +1,32 @@
 package com.LeoBeliik.convenientcurioscontainer.gui;
 
 import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 import top.theillusivec4.curios.common.inventory.CosmeticCurioSlot;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+
 import static com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
-public class ConvenientScreen extends ContainerScreen<ConvenientContainer> {
+public class ConvenientScreen extends AbstractContainerScreen<ConvenientContainer> {
 
     private static final ResourceLocation CONTAINER_BACKGROUND = new ResourceLocation(MODID, "textures/gui/curios_container.png");
-    private static final IFormattableTextComponent INFO = (new TranslationTextComponent("container_info")).withStyle(TextFormatting.GRAY);
-    private static final Minecraft minecraft = Minecraft.getInstance();
+    private static final MutableComponent INFO = (new TranslatableComponent("container_info")).withStyle(ChatFormatting.GRAY);
     private final int xSize = 176;
     private final int ySize = 186;
     private int currentScroll = 0;
 
-    public ConvenientScreen(ConvenientContainer container, PlayerInventory inventory, ITextComponent title) {
+    public ConvenientScreen(ConvenientContainer container, Inventory inventory, Component title) {
         super(container, inventory, title);
         imageHeight = 186;
         inventoryLabelY = 92;
@@ -33,7 +34,7 @@ public class ConvenientScreen extends ContainerScreen<ConvenientContainer> {
 
     @ParametersAreNonnullByDefault
     @Override
-    public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
         renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
         renderTooltip(ms, mouseX, mouseY);
@@ -59,8 +60,8 @@ public class ConvenientScreen extends ContainerScreen<ConvenientContainer> {
 
     @ParametersAreNonnullByDefault
     @Override
-    protected void renderBg(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
-        minecraft.getTextureManager().bind(CONTAINER_BACKGROUND);
+    protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY) {
+        RenderSystem.setShaderTexture(0, CONTAINER_BACKGROUND);
         blit(ms, getX(), getY(), 0, 0, xSize, ySize); //Main screen bounds
         renderCurios(ms);
     }
@@ -70,8 +71,7 @@ public class ConvenientScreen extends ContainerScreen<ConvenientContainer> {
         return super.mouseDragged(mouseX, mouseY, mouseDragged, xAmount, yAmount);
     }
 
-    private void renderCurios(MatrixStack ms) {
-        this.getMinecraft().getTextureManager().bind(CONTAINER_BACKGROUND);
+    private void renderCurios(PoseStack ms) {
         //render top and bottom
         if (menu.curiosSize() > 0) {
             int barHeight = Math.min(menu.curiosSize(), 9) * 18 + 12;

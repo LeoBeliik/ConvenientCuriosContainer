@@ -6,13 +6,13 @@ import com.LeoBeliik.convenientcurioscontainer.common.slots.ConvenientCurioSlots
 import com.LeoBeliik.convenientcurioscontainer.items.ConvenientItem;
 import com.LeoBeliik.convenientcurioscontainer.networking.Network;
 import com.LeoBeliik.convenientcurioscontainer.networking.ScrollMessage;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -25,19 +25,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ConvenientContainer extends Container {
+public class ConvenientContainer extends AbstractContainerMenu {
     private final ItemStackHandler ccItemHandler;
-    private final PlayerEntity player;
+    private final Player player;
     private final List<ConvenientCurioSlots> curioSlots = new ArrayList<>();
     private final List<ConvenientCosmeticSlots> cosmeticSlots = new ArrayList<>();
     private List<Boolean> hasCosmetic = new ArrayList<>();
     private boolean cosmeticColumn;
 
-    public ConvenientContainer(int windowId, PlayerInventory playerInv, PacketBuffer data) {
+    public ConvenientContainer(int windowId, Inventory playerInv, FriendlyByteBuf data) {
         this(windowId, playerInv, new ItemStackHandler(36));
     }
 
-    public ConvenientContainer(int id, PlayerInventory inventory, ItemStackHandler ccItemHandler) {
+    public ConvenientContainer(int id, Inventory inventory, ItemStackHandler ccItemHandler) {
         super(ConvenientCuriosContainer.CURIOS_CONTAINER_CONTAINER.get(), id);
         this.ccItemHandler = ccItemHandler;
         this.player = inventory.player;
@@ -46,7 +46,7 @@ public class ConvenientContainer extends Container {
         addCuriosSlots();
     }
 
-    private void addContainerSlots(PlayerInventory inventory) {
+    private void addContainerSlots(Inventory inventory) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 9; j++) {
                 addSlot(new SlotItemHandler(ccItemHandler, j + i * 9, j * 18 + 8, i * 18 + 18) {
@@ -59,7 +59,7 @@ public class ConvenientContainer extends Container {
         }
     }
 
-    private void addPlayerInvSlots(PlayerInventory inventory) {
+    private void addPlayerInvSlots(Inventory inventory) {
         //add inventory slots
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
@@ -72,7 +72,7 @@ public class ConvenientContainer extends Container {
                 addSlot(new Slot(inventory, i, i * 18 + 8, 162) {
                     @ParametersAreNonnullByDefault
                     @Override
-                    public boolean mayPickup(PlayerEntity player) {
+                    public boolean mayPickup(Player player) {
                         return false;
                     }
                 });
@@ -148,17 +148,17 @@ public class ConvenientContainer extends Container {
 
     @ParametersAreNonnullByDefault
     @Override
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return true;
     }
 
     @ParametersAreNonnullByDefault
     @Nonnull
     @Override
-    public ItemStack quickMoveStack(PlayerEntity player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemStackCopy = ItemStack.EMPTY;
         Slot slot = slots.get(index);
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack itemStackOG = slot.getItem();
             itemStackCopy = itemStackOG.copy();
             int size = 36;
@@ -179,20 +179,19 @@ public class ConvenientContainer extends Container {
     }
 
     @ParametersAreNonnullByDefault
-    @Nonnull
     @Override
-    public ItemStack clicked(int slot, int mouseClick, ClickType type, PlayerEntity player) {
+    public void clicked(int slot, int mouseClick, ClickType type, Player player) {
         if (mouseClick == 1 && slot >= 0 && slot < 36 && slots.get(slot).hasItem()) {
             if (type == ClickType.PICKUP) {
-                return swapCurios(slots.get(slot), player, false);
+                swapCurios(slots.get(slot), player, false);
             } else if (type == ClickType.QUICK_MOVE) {
-                return swapCurios(slots.get(slot), player, true);
+                swapCurios(slots.get(slot), player, true);
             }
         }
-        return super.clicked(slot, mouseClick, type, player);
+        super.clicked(slot, mouseClick, type, player);
     }
 
-    private ItemStack swapCurios(Slot slot, PlayerEntity player, boolean secondSlot) {
+    private void swapCurios(Slot slot, Player player, boolean secondSlot) {
         ItemStack itemstack1 = null;
         ItemStack itemstack2 = slot.getItem();
         Slot curioSlot = null;
@@ -208,7 +207,7 @@ public class ConvenientContainer extends Container {
             }
         }
         if (itemstack1 == null) {
-            return slot.getItem();
+            return;
         }
         if (!itemstack1.isEmpty() || !itemstack2.isEmpty()) {
             if (itemstack1.isEmpty()) {
@@ -242,6 +241,5 @@ public class ConvenientContainer extends Container {
                 }
             }
         }
-        return itemstack2;
     }
 }

@@ -1,15 +1,17 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://maven.parchmentmc.org' }
         maven { url = 'https://repo.spongepowered.org/maven' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
@@ -18,10 +20,10 @@ version = "1.${modversion}-${mcversion}"
 group = 'com.LeoBeliik.convenientcurioscontainer' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'convenientcurioscontainer'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 minecraft {
-    mappings channel: "official", version: "${mapversion}"
+    mappings channel: "parchment", version: "${mapversion}"
 
     runs {
         client {
@@ -82,7 +84,7 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mcversion}-${forgeversion}"
-    compile fg.deobf("top.theillusivec4.curios:curios-forge:${curiosversion}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curiosversion}")
 }
 
 tasks.register("version_up") {

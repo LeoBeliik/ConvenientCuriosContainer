@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[36,)"
+loaderVersion="[37,)"
 license= "GNU LESSER GENERAL PUBLIC LICENSE"
 licenseURL= "https://github.com/LeoBeliik/ConvenientCuriosContainer/blob/master/LICENSE.txt"
 issueTrackerURL="https://github.com/LeoBeliik/ConvenientCuriosContainer/issues"
@@ -18,18 +18,18 @@ that use the Curios API and let you equip / unequip them easily.
 [[dependencies.convenientcurioscontainer]]
     modId="forge"
     mandatory=true
-    versionRange="[36,)"
+    versionRange="[37,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.convenientcurioscontainer]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.5]"
+    versionRange="[1.17.1]"
     ordering="NONE"
     side="BOTH"
 [[dependencies.convenientcurioscontainer]]
     modId="curios"
     mandatory=true
-    versionRange = "[1.16.5-4.0,)"
+    versionRange = "[1.17.1-5.0,)"
     ordering="NONE"
     side="BOTH"
