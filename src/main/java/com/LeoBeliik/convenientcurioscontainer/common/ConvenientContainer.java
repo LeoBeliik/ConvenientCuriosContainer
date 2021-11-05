@@ -184,8 +184,10 @@ public class ConvenientContainer extends AbstractContainerMenu {
         if (mouseClick == 1 && slot >= 0 && slot < 36 && slots.get(slot).hasItem()) {
             if (type == ClickType.PICKUP) {
                 swapCurios(slots.get(slot), player, false);
+                return;
             } else if (type == ClickType.QUICK_MOVE) {
                 swapCurios(slots.get(slot), player, true);
+                return;
             }
         }
         super.clicked(slot, mouseClick, type, player);
