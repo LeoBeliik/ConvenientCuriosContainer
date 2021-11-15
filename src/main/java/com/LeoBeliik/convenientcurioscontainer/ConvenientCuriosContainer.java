@@ -27,6 +27,7 @@ public class ConvenientCuriosContainer {
     public ConvenientCuriosContainer() {
         MinecraftForge.EVENT_BUS.register(this);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientRegistry);
+        Config.init();
         Registry();
     }
 
