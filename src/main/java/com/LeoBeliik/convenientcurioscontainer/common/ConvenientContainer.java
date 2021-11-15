@@ -1,5 +1,6 @@
 package com.LeoBeliik.convenientcurioscontainer.common;
 
+import com.LeoBeliik.convenientcurioscontainer.Config;
 import com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer;
 import com.LeoBeliik.convenientcurioscontainer.common.slots.ConvenientCosmeticSlots;
 import com.LeoBeliik.convenientcurioscontainer.common.slots.ConvenientCurioSlots;
@@ -52,7 +53,7 @@ public class ConvenientContainer extends Container {
                 addSlot(new SlotItemHandler(ccItemHandler, j + i * 9, j * 18 + 8, i * 18 + 18) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
-                        return !CuriosApi.getCuriosHelper().getCurioTags(stack.getItem()).isEmpty();
+                        return isItemValid(stack);
                     }
                 });
             }
@@ -101,6 +102,12 @@ public class ConvenientContainer extends Container {
             }
         });
         addCustomSlots();
+    }
+
+    private boolean isItemValid(ItemStack stack) {
+        return !CuriosApi.getCuriosHelper().getCurioTags(stack.getItem()).isEmpty()
+                && stack.getItem().getRegistryName() != null
+                && !Config.getForbiddenTrinkets().contains(stack.getItem().getRegistryName().toString());
     }
 
     private void addCustomSlots() {
