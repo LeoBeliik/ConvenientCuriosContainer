@@ -1,0 +1,50 @@
+name: Bug Report
+description: For bug reports.
+title: "🐞 "
+labels: [bug]
+body: 
+  - type: input
+    id: CCC_version
+    attributes:
+      label: Convenient Curios container version
+      placeholder: "1.00"
+    validations:
+      required: true
+  - type: input
+    id: forge-version
+    attributes:
+      label: Forge version
+      placeholder: "1.16.5 - 36.2.4"
+    validations:
+      required: true
+  - type: textarea
+    id: other_versions
+    attributes:
+      label: Additional mod(s) version (If bug is due incompatibility)
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Step by step instructions on how to reproduce the observed behaviour
+      placeholder: |
+          1. Go to '...'
+          2. Click on '....'
+          3. Scroll down to '....'
+          4. See error
+  - type: input
+    id: crashlog
+    attributes:
+      label: Crashlog
+      description: If applicable, add screenshot links or a crashlog link to help explain your problem.
+  - type: textarea
+    id: other-mods
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here, like other mods for example.
