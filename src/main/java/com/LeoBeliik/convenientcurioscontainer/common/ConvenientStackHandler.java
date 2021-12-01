@@ -1,12 +1,12 @@
 package com.LeoBeliik.convenientcurioscontainer.common;
 
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -33,7 +33,7 @@ public class ConvenientStackHandler extends ItemStackHandler implements ICapabil
         ListTag list;
 
         if (!stack.isEmpty() && stack.hasTag() && stack.getOrCreateTag().contains(key)) {
-            list = stack.getOrCreateTag().getList(key, Constants.NBT.TAG_COMPOUND);
+            list = stack.getOrCreateTag().getList(key, Tag.TAG_COMPOUND);
         } else {
             stack.getOrCreateTag().put(key, list = new ListTag());
         }

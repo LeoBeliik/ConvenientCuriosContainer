@@ -9,13 +9,13 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 @Mod("convenientcurioscontainer")
 public class ConvenientCuriosContainer {
@@ -45,5 +45,5 @@ public class ConvenientCuriosContainer {
             new ConvenientItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)));
 
     public static final RegistryObject<MenuType<ConvenientContainer>> CURIOS_CONTAINER_CONTAINER = CONTAINERS.register(
-            "curios_container", () -> IForgeContainerType.create(ConvenientContainer::new));
+            "curios_container", () -> IForgeMenuType.create(ConvenientContainer::new));
 }
