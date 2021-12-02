@@ -34,12 +34,8 @@ public class ConvenientItem extends Item {
 
         if (nbt != null && nbt.contains("Parent")) {
             CompoundNBT itemData = nbt.getCompound("Parent");
-            ItemStackHandler stacks = new ItemStackHandler();
+            ItemStackHandler stacks = new ItemStackHandler(36);
             stacks.deserializeNBT(itemData);
-
-            for (int i = 0; i < stacks.getSlots(); i++) {
-                handler.setStackInSlot(i, stacks.getStackInSlot(i));
-            }
             nbt.remove("Parent");
         }
         return handler;
