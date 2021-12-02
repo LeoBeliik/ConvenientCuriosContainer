@@ -36,10 +36,6 @@ public class ConvenientItem extends Item {
             CompoundTag itemData = nbt.getCompound("Parent");
             ItemStackHandler stacks = new ItemStackHandler();
             stacks.deserializeNBT(itemData);
-
-            for (int i = 0; i < stacks.getSlots(); i++) {
-                handler.setStackInSlot(i, stacks.getStackInSlot(i));
-            }
             nbt.remove("Parent");
         }
         return handler;
