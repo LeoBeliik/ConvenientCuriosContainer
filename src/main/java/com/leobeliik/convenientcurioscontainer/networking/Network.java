@@ -1,6 +1,6 @@
-package com.LeoBeliik.convenientcurioscontainer.networking;
+package com.leobeliik.convenientcurioscontainer.networking;
 
-import com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer;
+import com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;

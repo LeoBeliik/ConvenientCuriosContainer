@@ -1,12 +1,12 @@
-package com.LeoBeliik.convenientcurioscontainer.common;
+package com.leobeliik.convenientcurioscontainer.common;
 
-import com.LeoBeliik.convenientcurioscontainer.Config;
-import com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer;
-import com.LeoBeliik.convenientcurioscontainer.common.slots.ConvenientCosmeticSlots;
-import com.LeoBeliik.convenientcurioscontainer.common.slots.ConvenientCurioSlots;
-import com.LeoBeliik.convenientcurioscontainer.items.ConvenientItem;
-import com.LeoBeliik.convenientcurioscontainer.networking.Network;
-import com.LeoBeliik.convenientcurioscontainer.networking.ScrollMessage;
+import com.leobeliik.convenientcurioscontainer.Config;
+import com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer;
+import com.leobeliik.convenientcurioscontainer.common.slots.ConvenientCosmeticSlots;
+import com.leobeliik.convenientcurioscontainer.common.slots.ConvenientCurioSlots;
+import com.leobeliik.convenientcurioscontainer.items.ConvenientItem;
+import com.leobeliik.convenientcurioscontainer.networking.Network;
+import com.leobeliik.convenientcurioscontainer.networking.ScrollMessage;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
@@ -19,12 +19,12 @@ import net.minecraftforge.items.SlotItemHandler;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
+
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ConvenientContainer extends AbstractContainerMenu {
     private final ItemStackHandler ccItemHandler;
@@ -118,14 +118,12 @@ public class ConvenientContainer extends AbstractContainerMenu {
     public void scroll(int direction) {
         slots.removeIf(s -> s instanceof CurioSlot);
         List<ConvenientCosmeticSlots> tempCosmetic = cosmeticSlots.stream().map(s ->
-                        new ConvenientCosmeticSlots(player, s.getHandler(), s.getIndex(), s.getIdentifier(), s.getX(), s.getY() + 18 * direction))
-                .collect(Collectors.toList());
+                new ConvenientCosmeticSlots(player, s.getHandler(), s.getIndex(), s.getIdentifier(), s.getX(), s.getY() + 18 * direction)).toList();
         cosmeticSlots.clear();
         cosmeticSlots.addAll(tempCosmetic);
 
         List<ConvenientCurioSlots> tempCurios = curioSlots.stream().map(s ->
-                        new ConvenientCurioSlots(player, s.getHandler(), s.getIndex(), s.getIdentifier(), s.getX(), s.getY() + 18 * direction, s.getRenders()))
-                .collect(Collectors.toList());
+                new ConvenientCurioSlots(player, s.getHandler(), s.getIndex(), s.getIdentifier(), s.getX(), s.getY() + 18 * direction, s.getRenders())).toList();
         curioSlots.clear();
         curioSlots.addAll(tempCurios);
 
@@ -149,6 +147,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
     public List<Slot> getSlots() {
         return slots;
     }
+
     public boolean hasCosmeticColumn() {
         return cosmeticColumn;
     }

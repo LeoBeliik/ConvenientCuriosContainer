@@ -1,7 +1,7 @@
-package com.LeoBeliik.convenientcurioscontainer.items;
+package com.leobeliik.convenientcurioscontainer.items;
 
-import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
-import com.LeoBeliik.convenientcurioscontainer.common.ConvenientStackHandler;
+import com.leobeliik.convenientcurioscontainer.common.ConvenientContainer;
+import com.leobeliik.convenientcurioscontainer.common.ConvenientStackHandler;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,12 +35,8 @@ public class ConvenientItem extends Item {
 
         if (nbt != null && nbt.contains("Parent")) {
             CompoundTag itemData = nbt.getCompound("Parent");
-            ItemStackHandler stacks = new ItemStackHandler();
+            ItemStackHandler stacks = new ItemStackHandler(36);
             stacks.deserializeNBT(itemData);
-
-            for (int i = 0; i < stacks.getSlots(); i++) {
-                handler.setStackInSlot(i, stacks.getStackInSlot(i));
-            }
             nbt.remove("Parent");
         }
         return handler;

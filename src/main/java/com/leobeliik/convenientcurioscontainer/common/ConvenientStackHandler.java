@@ -1,4 +1,4 @@
-package com.LeoBeliik.convenientcurioscontainer.common;
+package com.leobeliik.convenientcurioscontainer.common;
 
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;

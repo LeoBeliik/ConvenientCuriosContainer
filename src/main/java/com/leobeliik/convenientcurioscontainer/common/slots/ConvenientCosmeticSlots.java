@@ -1,4 +1,4 @@
-package com.LeoBeliik.convenientcurioscontainer.common.slots;
+package com.leobeliik.convenientcurioscontainer.common.slots;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.NonNullList;

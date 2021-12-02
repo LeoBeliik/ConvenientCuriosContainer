@@ -77,12 +77,17 @@ repositories {
     maven {
         url = "https://maven.theillusivec4.top/"
     }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mcversion}-${forgeversion}"
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curiosversion}")
+    implementation fg.deobf("blank:curios_test_items:1.0")
 }
+
 
 tasks.register("version_up") {
     doLast {

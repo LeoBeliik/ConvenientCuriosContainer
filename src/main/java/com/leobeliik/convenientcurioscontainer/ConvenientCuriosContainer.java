@@ -1,9 +1,9 @@
-package com.LeoBeliik.convenientcurioscontainer;
+package com.leobeliik.convenientcurioscontainer;
 
-import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
-import com.LeoBeliik.convenientcurioscontainer.gui.ConvenientScreen;
-import com.LeoBeliik.convenientcurioscontainer.items.ConvenientItem;
-import com.LeoBeliik.convenientcurioscontainer.networking.Network;
+import com.leobeliik.convenientcurioscontainer.common.ConvenientContainer;
+import com.leobeliik.convenientcurioscontainer.gui.ConvenientScreen;
+import com.leobeliik.convenientcurioscontainer.items.ConvenientItem;
+import com.leobeliik.convenientcurioscontainer.networking.Network;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;

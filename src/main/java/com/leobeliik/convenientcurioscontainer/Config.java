@@ -1,4 +1,4 @@
-package com.LeoBeliik.convenientcurioscontainer;
+package com.leobeliik.convenientcurioscontainer;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;

@@ -1,6 +1,6 @@
-package com.LeoBeliik.convenientcurioscontainer.networking;
+package com.leobeliik.convenientcurioscontainer.networking;
 
-import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
+import com.leobeliik.convenientcurioscontainer.common.ConvenientContainer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -8,6 +8,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("SameReturnValue")
 public class ScrollMessage {
     private int direction;
 

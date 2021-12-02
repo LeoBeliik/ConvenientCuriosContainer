@@ -1,6 +1,6 @@
-package com.LeoBeliik.convenientcurioscontainer.gui;
+package com.leobeliik.convenientcurioscontainer.gui;
 
-import com.LeoBeliik.convenientcurioscontainer.common.ConvenientContainer;
+import com.leobeliik.convenientcurioscontainer.common.ConvenientContainer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -15,7 +15,7 @@ import top.theillusivec4.curios.common.inventory.CurioSlot;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-import static com.LeoBeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
+import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
 public class ConvenientScreen extends AbstractContainerScreen<ConvenientContainer> {
 
