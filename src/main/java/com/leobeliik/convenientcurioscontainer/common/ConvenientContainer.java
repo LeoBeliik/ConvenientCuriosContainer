@@ -214,7 +214,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
                 break;
             }
         }
-        if (itemstack1 == null) {
+        if (itemstack1 == null || !curioSlot.mayPickup(player)) {
             return;
         }
         if (!itemstack1.isEmpty() || !itemstack2.isEmpty()) {
