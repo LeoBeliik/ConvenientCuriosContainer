@@ -214,7 +214,7 @@ public class ConvenientContainer extends Container {
                 break;
             }
         }
-        if (itemstack1 == null) {
+        if (itemstack1 == null || !curioSlot.mayPickup(player)) {
             return slot.getItem();
         }
         if (!itemstack1.isEmpty() || !itemstack2.isEmpty()) {
