@@ -50,5 +50,5 @@
   **Shift left clicking** an item that's inside the container will try to equip it in the last available Curio slot, it will **not swap** items.
   
   <p align="center">
-  <img width="608" height="342" src="ConvenientCuriosContainer.gif">
+  <img width="608" height="342" src="https://github.com/LeoBeliik/ConvenientCuriosContainer/blob/1.16.5/ConvenientCuriosContainer.gif">
   </p>
