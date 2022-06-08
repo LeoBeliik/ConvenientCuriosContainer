@@ -19,7 +19,6 @@ import net.minecraftforge.registries.RegistryObject;
 
 @Mod("convenientcurioscontainer")
 public class ConvenientCuriosContainer {
-//TODO re write this mod for 1.19
     public static final String MODID = "convenientcurioscontainer";
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);

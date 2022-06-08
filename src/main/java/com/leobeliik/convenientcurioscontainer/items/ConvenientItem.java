@@ -60,10 +60,10 @@ public class ConvenientItem extends Item {
                 return new ConvenientContainer(id, inventory, getItemHandler(itemStack));
             }
         };
-        if (!level.isClientSide()) {
+        if (!level.isClientSide) {
             NetworkHooks.openGui((ServerPlayer) player, ccProvider);
         }
-        return InteractionResultHolder.success(itemStack);
+        return InteractionResultHolder.fail(itemStack);
     }
 
     private ItemStackHandler getItemHandler(ItemStack stack) {

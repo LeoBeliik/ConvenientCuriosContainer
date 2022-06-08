@@ -19,7 +19,6 @@ import net.minecraftforge.items.SlotItemHandler;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
-
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -106,8 +105,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
 
     private boolean isItemValid(ItemStack stack) {
         return !CuriosApi.getCuriosHelper().getCurioTags(stack.getItem()).isEmpty()
-                && stack.getItem().getRegistryName() != null
-                && !Config.getForbiddenTrinkets().contains(stack.getItem().getRegistryName().toString());
+                && !Config.getForbiddenTrinkets().contains(stack.getItem().getName(stack).toString());
     }
 
     private void addCustomSlots() {

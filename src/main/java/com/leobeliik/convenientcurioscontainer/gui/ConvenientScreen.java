@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -39,9 +38,9 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
         if (mouseX > leftPos + 168 && mouseX < leftPos + 172 && mouseY > topPos + 3 && mouseY < topPos + 9) {
             //there has to be a better way to do this...
             renderTooltip(ms,
-                    List.of(new TranslatableComponent("container_info").withStyle(ChatFormatting.GRAY),
-                            new TranslatableComponent("container_RMB").withStyle(ChatFormatting.GRAY),
-                            new TranslatableComponent("container_SRMB").withStyle(ChatFormatting.GRAY)),
+                    List.of(Component.translatable("container_info").withStyle(ChatFormatting.GRAY),
+                            Component.translatable("container_RMB").withStyle(ChatFormatting.GRAY),
+                            Component.translatable("container_SRMB").withStyle(ChatFormatting.GRAY)),
                     java.util.Optional.empty(), mouseX, mouseY);
         }
     }
