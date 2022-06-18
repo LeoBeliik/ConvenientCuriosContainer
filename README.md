@@ -22,7 +22,7 @@
         <img src="https://img.shields.io/github/license/LeoBeliik/ConvenientCuriosContainer.svg?style=for-the-badge" /> </a>  
 </p>
 <p align="center">
-  <a href="https://www.paypal.com/donate?hosted_button_id=DEHFBEM67G3KY" alt="Support via PayPal">
+  <a href="https://www.paypal.com/donate/?hosted_button_id=WMZ3ZENJHJLPY" alt="Support via PayPal">
         <img src="https://img.shields.io/badge/Donate-PayPal-green.svg" /> </a>
 </p>
   
