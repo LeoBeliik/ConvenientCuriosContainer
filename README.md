@@ -21,10 +21,6 @@
   <a href="https://github.com/LeoBeliik/ConvenientCuriosContainer/blob/master/LICENSE.txt" alt="License">
         <img src="https://img.shields.io/github/license/LeoBeliik/ConvenientCuriosContainer.svg?style=for-the-badge" /> </a>  
 </p>
-<p align="center">
-  <a href="https://www.paypal.com/donate/?hosted_button_id=WMZ3ZENJHJLPY" alt="Support via PayPal">
-        <img src="https://img.shields.io/badge/Donate-PayPal-green.svg" /> </a>
-</p>
   
   <h5 align="center"><b>This Mod needs <a href= https://files.minecraftforge.net/net/minecraftforge/forge alt="FORGE"> FORGE</a> to work.</b></h5>
   
