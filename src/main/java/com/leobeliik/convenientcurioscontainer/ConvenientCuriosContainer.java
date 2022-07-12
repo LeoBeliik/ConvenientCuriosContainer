@@ -21,7 +21,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ConvenientCuriosContainer {
     public static final String MODID = "convenientcurioscontainer";
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
-    private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
+    private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
 
     public ConvenientCuriosContainer() {
         MinecraftForge.EVENT_BUS.register(this);

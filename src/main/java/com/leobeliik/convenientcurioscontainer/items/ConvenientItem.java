@@ -61,7 +61,7 @@ public class ConvenientItem extends Item {
             }
         };
         if (!level.isClientSide) {
-            NetworkHooks.openGui((ServerPlayer) player, ccProvider);
+            NetworkHooks.openScreen((ServerPlayer) player, ccProvider);
         }
         return InteractionResultHolder.fail(itemStack);
     }
