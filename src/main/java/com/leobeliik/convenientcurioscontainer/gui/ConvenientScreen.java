@@ -1,9 +1,11 @@
 package com.leobeliik.convenientcurioscontainer.gui;
 
+import com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer;
 import com.leobeliik.convenientcurioscontainer.common.ConvenientContainer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -107,6 +109,15 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
             blit(ms, scrollXPos, scrollYPos, 186, 51, 5, 9); //scroll
         }
         //blit(matrix, x, y, xtexture, ytexture, width, height)
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (Minecraft.getInstance().options.keyInventory.matches(keyCode, scanCode) || ConvenientCuriosContainer.openConvenientKey.matches(keyCode, scanCode)) {
+            this.onClose();
+            return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     private int getX() {

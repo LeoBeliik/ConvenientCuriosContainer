@@ -14,7 +14,7 @@ public class Config {
     private static ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
     private static ForgeConfigSpec.ConfigValue<List<? extends String>> forbiddenTrinkets;
 
-    static void init() {
+    public static void init() {
         buildConfig();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
     }

@@ -2,6 +2,7 @@ package com.leobeliik.convenientcurioscontainer.networking;
 
 import com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
@@ -23,6 +24,12 @@ public class Network {
                 .encoder(ScrollMessage::encode)
                 .decoder(ScrollMessage::decode)
                 .consumer(ScrollMessage::handle)
+                .add();
+
+        INSTANCE.messageBuilder(openConvenientContainer.class, nextID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(openConvenientContainer::new)
+                .encoder(openConvenientContainer::toBytes)
+                .consumer(openConvenientContainer::handle)
                 .add();
     }
 
