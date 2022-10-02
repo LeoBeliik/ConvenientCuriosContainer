@@ -15,7 +15,6 @@ import top.theillusivec4.curios.common.inventory.CosmeticCurioSlot;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
-
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
 public class ConvenientScreen extends AbstractContainerScreen<ConvenientContainer> {
