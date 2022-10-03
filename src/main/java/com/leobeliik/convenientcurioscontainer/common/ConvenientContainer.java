@@ -37,7 +37,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
         this(windowId, playerInv, new ItemStackHandler(36));
     }
 
-    public ConvenientContainer(int id, Inventory inventory, ItemStackHandler ccItemHandler) {
+    ConvenientContainer(int id, Inventory inventory, ItemStackHandler ccItemHandler) {
         super(ConvenientCuriosContainer.CURIOS_CONTAINER_CONTAINER.get(), id);
         this.ccItemHandler = ccItemHandler;
         this.player = inventory.player;
@@ -198,52 +198,42 @@ public class ConvenientContainer extends AbstractContainerMenu {
     }
 
     private void swapCurios(Slot slot, Player player, boolean secondSlot) {
-        ItemStack itemstack1 = null;
-        ItemStack itemstack2 = slot.getItem();
+        ItemStack curiosItem = null;
+        ItemStack containerItem = slot.getItem();
         Slot curioSlot = null;
         for (Slot cs : curioSlots) {
-            if (cs.mayPlace(itemstack2)) {
+            if (cs.mayPlace(containerItem)) {
                 if (secondSlot) {
                     secondSlot = false;
                     continue;
                 }
-                itemstack1 = cs.getItem();
+                curiosItem = cs.getItem();
                 curioSlot = cs;
                 break;
             }
         }
-        if (itemstack1 == null || !curioSlot.mayPickup(player)) {
+        if (curiosItem == null) {
             return;
         }
-        if (!itemstack1.isEmpty() || !itemstack2.isEmpty()) {
-            if (itemstack1.isEmpty()) {
+        if (!curiosItem.isEmpty() || !containerItem.isEmpty()) {
+            if (curiosItem.isEmpty()) {
                 if (slot.mayPickup(player)) {
-                    curioSlot.set(itemstack2);
+                    curioSlot.set(containerItem);
                     slot.set(ItemStack.EMPTY);
-                    slot.onTake(player, itemstack2);
+                    slot.onTake(player, containerItem);
                 }
-            } else if (itemstack2.isEmpty()) {
-                if (slot.mayPlace(itemstack1)) {
-                    int i = slot.getMaxStackSize(itemstack1);
-                    if (itemstack1.getCount() > i) {
-                        slot.set(itemstack1.split(i));
-                    } else {
-                        slot.set(itemstack1);
-                        curioSlot.set(ItemStack.EMPTY);
-                    }
-                }
-            } else if (slot.mayPickup(player) && slot.mayPlace(itemstack1)) {
-                int l1 = slot.getMaxStackSize(itemstack1);
-                if (itemstack1.getCount() > l1) {
-                    slot.set(itemstack1.split(l1));
-                    slot.onTake(player, itemstack2);
-                    if (!curioSlot.mayPlace(itemstack2)) {
-                        player.drop(itemstack2, true);
+            } else if (slot.mayPickup(player) && slot.mayPlace(curiosItem) && curioSlot.mayPickup(player)) {
+                int l1 = slot.getMaxStackSize(curiosItem);
+                if (curiosItem.getCount() > l1) {
+                    slot.set(curiosItem.split(l1));
+                    slot.onTake(player, containerItem);
+                    if (!curioSlot.mayPlace(containerItem)) {
+                        player.drop(containerItem, true);
                     }
                 } else {
-                    slot.set(itemstack1);
-                    curioSlot.set(itemstack2);
-                    slot.onTake(player, itemstack2);
+                    slot.set(curiosItem);
+                    curioSlot.set(containerItem);
+                    slot.onTake(player, containerItem);
                 }
             }
         }
