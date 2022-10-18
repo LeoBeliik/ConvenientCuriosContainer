@@ -182,6 +182,79 @@ public class ConvenientContainer extends AbstractContainerMenu {
         return itemStackCopy;
     }
 
+    /*
+    * This was stolen from Quark
+    * https://github.com/VazkiiMods/Quark/blob/25e736f8828c8909ab765b9f2ea457d3b188902c/src/main/java/vazkii/quark/addons/oddities/inventory/BackpackMenu.java#L121
+    * I'll move all this logic to Forge Capabilities in the next version (2.0)
+    */
+    @Override
+    protected boolean moveItemStackTo(ItemStack stack, int start, int length, boolean r) {
+        boolean successful = false;
+        int i = !r ? start : length - 1;
+        int iterOrder = !r ? 1 : -1;
+
+        Slot slot;
+        ItemStack existingStack;
+
+        if(stack.isStackable()) while (stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
+            slot = slots.get(i);
+
+            existingStack = slot.getItem();
+
+            if (!existingStack.isEmpty()) {
+                int maxStack = Math.min(stack.getMaxStackSize(), slot.getMaxStackSize());
+                int rmv = Math.min(maxStack, stack.getCount());
+
+                if (slot.mayPlace(cloneStack(stack, rmv)) && existingStack.getItem().equals(stack.getItem()) && ItemStack.tagMatches(stack, existingStack)) {
+                    int existingSize = existingStack.getCount() + stack.getCount();
+
+                    if (existingSize <= maxStack) {
+                        stack.setCount(0);
+                        existingStack.setCount(existingSize);
+                        slot.set(existingStack);
+                        successful = true;
+                    } else if (existingStack.getCount() < maxStack) {
+                        stack.shrink(maxStack - existingStack.getCount());
+                        existingStack.setCount(maxStack);
+                        slot.set(existingStack);
+                        successful = true;
+                    }
+                }
+            }
+            i += iterOrder;
+        }
+        if(stack.getCount() > 0) {
+            i = !r ? start : length - 1;
+            while(stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
+                slot = slots.get(i);
+                existingStack = slot.getItem();
+
+                if(existingStack.isEmpty()) {
+                    int maxStack = Math.min(stack.getMaxStackSize(), slot.getMaxStackSize());
+                    int rmv = Math.min(maxStack, stack.getCount());
+
+                    if(slot.mayPlace(cloneStack(stack, rmv))) {
+                        existingStack = stack.split(rmv);
+                        slot.set(existingStack);
+                        successful = true;
+                    }
+                }
+                i += iterOrder;
+            }
+        }
+        return successful;
+    }
+
+    private static ItemStack cloneStack(ItemStack stack, int size) {
+        if(stack.isEmpty())
+            return ItemStack.EMPTY;
+
+        ItemStack copy = stack.copy();
+        copy.setCount(size);
+        return copy;
+    }
+    /* ***************************************************************************************************************************** */
+
     @ParametersAreNonnullByDefault
     @Override
     public void clicked(int slot, int mouseClick, ClickType type, Player player) {
