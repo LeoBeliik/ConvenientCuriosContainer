@@ -50,7 +50,7 @@ public class ConvenientCuriosContainer {
     }
 
     private void keyRegistry() {
-        openConvenientKey = new KeyMapping(new TranslatableComponent("key.open_muffler_gui").getKey(),
+        openConvenientKey = new KeyMapping(new TranslatableComponent("key.open_convenient_gui").getKey(),
                 InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), "key.categories.misc");
         ClientRegistry.registerKeyBinding(openConvenientKey);
     }
