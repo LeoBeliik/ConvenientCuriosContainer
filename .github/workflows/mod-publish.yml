@@ -1,0 +1,56 @@
+name: Pubish mod
+
+on: workflow_dispatch
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+                
+    - name: Make Gradle wrapper executable
+      run: chmod +x ./gradlew
+      
+    - name: Version UP
+      run: ./gradlew version_up
+      
+    - name: Build with Gradle
+      run: ./gradlew --max-workers 1 build
+      
+    - name: Collect version information
+      run: |
+          set_var() {
+            echo $1="$2"
+            echo $1="$2" >> $GITHUB_ENV
+            declare -g $1="$2"
+          }
+          set_var JAR_FILE $(eval echo build/libs/convenientcurioscontainer-*-*.jar)
+          set_var MOD_VERSION $(echo ${JAR_FILE%.*} | cut -d- -f2)
+
+    - name: Publish Minecraft Mods
+      uses: Kir-Antipov/mc-publish@v3.2
+      with:
+          modrinth-id: jIJyY7rq
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          curseforge-id: 544033
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          name: Convenient Curios Container ${{env.MOD_VERSION}} - Forge ${{github.ref_name}}
+          loaders: forge
+          version: ${{env.MOD_VERSION}}-${{github.ref_name}}
+          
+    - name: Cleanup Gradle Cache
+      run: ./gradlew --stop |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
