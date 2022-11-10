@@ -21,9 +21,6 @@ jobs:
     - name: Make Gradle wrapper executable
       run: chmod +x ./gradlew
       
-    - name: Version UP
-      run: ./gradlew version_up
-      
     - name: Build with Gradle
       run: ./gradlew --max-workers 1 build
       
@@ -37,12 +34,6 @@ jobs:
           set_var JAR_FILE $(eval echo build/libs/convenientcurioscontainer-*-*.jar)
           set_var MOD_VERSION $(echo ${JAR_FILE%.*} | cut -d- -f2)
           
-    - name: Install changelog parser
-      uses: taiki-e/install-action@parse-changelog
-
-    - name: Parse changelog
-      run: parse-changelog CHANGELOG.md ${{ env.MOD_VERSION }} > changes.md
-
     - name: Publish Minecraft Mods
       uses: Kir-Antipov/mc-publish@v3.2
       with:
