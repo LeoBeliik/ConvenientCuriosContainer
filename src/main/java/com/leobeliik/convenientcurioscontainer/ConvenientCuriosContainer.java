@@ -46,7 +46,7 @@ public class ConvenientCuriosContainer {
     }
 
     private void keyRegistry(RegisterKeyMappingsEvent event) {
-        openConvenientKey = new KeyMapping(new TranslatableContents("key.key.open_convenient_gui").getKey(),
+        openConvenientKey = new KeyMapping(new TranslatableContents("key.open_convenient_gui").getKey(),
                 InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), "key.categories.misc");
         event.register(openConvenientKey);
     }
