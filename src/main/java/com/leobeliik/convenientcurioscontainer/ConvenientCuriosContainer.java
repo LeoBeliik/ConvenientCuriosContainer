@@ -10,14 +10,16 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -41,6 +43,7 @@ public class ConvenientCuriosContainer {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(this::keyRegistry));
         bus.addListener(this::clientRegistry);
+        bus.addListener(this::onCreativeModeTabBuildContents);
         Config.init();
         Registry();
     }
@@ -62,7 +65,7 @@ public class ConvenientCuriosContainer {
     }
 
     public static final RegistryObject<Item> CURIOS_CONTAINER_ITEM = ITEMS.register("curios_container", () ->
-            new ConvenientItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)));
+            new ConvenientItem(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<MenuType<ConvenientContainer>> CURIOS_CONTAINER_CONTAINER = CONTAINERS.register(
             "curios_container", () -> IForgeMenuType.create(ConvenientContainer::new));
@@ -72,6 +75,15 @@ public class ConvenientCuriosContainer {
     public void onKeyInput(InputEvent event) {
         if (openConvenientKey.consumeClick()) {
             Network.sendToServer(new openConvenientContainer());
+        }
+    }
+
+    @SubscribeEvent
+    public void onCreativeModeTabBuildContents(CreativeModeTabEvent.BuildContents event) {
+        if (event.getTab() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+            event.register((flags, builder, hasPermissions) -> {
+                builder.accept(new ItemStack(CURIOS_CONTAINER_ITEM.get()));
+            });
         }
     }
 }

@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -31,7 +31,7 @@ public class ConvenientMenuProvider {
     }
 
     private static ItemStackHandler getItemHandler(ItemStack stack) {
-        return (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        return (ItemStackHandler) stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .orElse(new ConvenientStackHandler(stack, 36));
     }
 }

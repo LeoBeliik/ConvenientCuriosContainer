@@ -92,11 +92,9 @@ dependencies {
 tasks.register("version_up") {
     doFirst {
         def gp = file("gradle.properties")
-        def ch = file("CHANGELOG.md")
         def mv = "${modversion}".toInteger() + 1
 
         gp.setText(gp.getText().replace("modversion = " + "${modversion}", "modversion = " + mv.toString()))
-        ch.setText("# 1." + mv.toString() + "\n" + ch.getText())
     }
 }
 

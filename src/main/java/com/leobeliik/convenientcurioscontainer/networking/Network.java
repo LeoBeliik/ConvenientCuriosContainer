@@ -23,13 +23,13 @@ public class Network {
         INSTANCE.messageBuilder(ScrollMessage.class, nextID())
                 .encoder(ScrollMessage::encode)
                 .decoder(ScrollMessage::decode)
-                .consumer(ScrollMessage::handle)
+                .consumerNetworkThread(ScrollMessage::handle)
                 .add();
 
         INSTANCE.messageBuilder(openConvenientContainer.class, nextID(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(openConvenientContainer::new)
                 .encoder(openConvenientContainer::toBytes)
-                .consumer(openConvenientContainer::handle)
+                .consumerNetworkThread(openConvenientContainer::handle)
                 .add();
     }
 
