@@ -81,9 +81,7 @@ public class ConvenientCuriosContainer {
     @SubscribeEvent
     public void onCreativeModeTabBuildContents(CreativeModeTabEvent.BuildContents event) {
         if (event.getTab() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
-            event.register((flags, builder, hasPermissions) -> {
-                builder.accept(new ItemStack(CURIOS_CONTAINER_ITEM.get()));
-            });
+            event.accept(new ItemStack(CURIOS_CONTAINER_ITEM.get()));
         }
     }
 }

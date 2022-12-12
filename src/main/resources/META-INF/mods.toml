@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[38,)"
+loaderVersion="[44,)"
 license= "GNU LESSER GENERAL PUBLIC LICENSE"
 licenseURL= "https://github.com/LeoBeliik/ConvenientCuriosContainer/blob/master/LICENSE.txt"
 issueTrackerURL="https://github.com/LeoBeliik/ConvenientCuriosContainer/issues"
 [[mods]]
 modId="convenientcurioscontainer"
-version="${file.jarVersion}"
+version="1.${file.jarVersion}"
 displayName="Convenient Curios Container"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/ConvenientCuriosContainer"
 authors="LeoBeliik"
@@ -18,13 +18,13 @@ that use the Curios API and let you equip / unequip them easily.
 [[dependencies.convenientcurioscontainer]]
     modId="forge"
     mandatory=true
-    versionRange="[41.0.18,)"
+    versionRange="[44.0.18,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.convenientcurioscontainer]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19,)"
+    versionRange="[1.19.3,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.convenientcurioscontainer]]
