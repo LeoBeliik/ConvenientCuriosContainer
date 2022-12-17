@@ -22,6 +22,7 @@ import top.theillusivec4.curios.common.inventory.CurioSlot;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -254,10 +255,25 @@ public class ConvenientContainer extends AbstractContainerMenu {
         return copy;
     }
     /* ***************************************************************************************************************************** */
+    public boolean itemHasAtt(int slot, boolean isSwap) {
+        //little hack for #5; to be fixed in 2.0 or when I have time
+        //TODO keep this in mind for the rewrite
+        int targetSlots = isSwap ? 0 : 72;
+        if (slot >= targetSlots && !getSlots().get(slot).getItem().isEmpty()) {
+            if (!CuriosApi.getCuriosHelper().getAttributeModifiers("", getSlots().get(slot).getItem()).isEmpty()) {
+                return CuriosApi.getCuriosHelper().getAttributeModifiers("", getSlots().get(slot).getItem()).asMap().values().stream().flatMap(Collection::stream).anyMatch(modifier ->
+                        CuriosApi.getSlotHelper().getSlotTypes().stream().anyMatch(slotType ->
+                                modifier.getName().equals(slotType.getIdentifier())));
+            }
+        }
+        return false;
+    }
 
     @ParametersAreNonnullByDefault
     @Override
     public void clicked(int slot, int mouseClick, ClickType type, Player player) {
+        if (itemHasAtt(slot, false)) return;
+
         if (mouseClick == 1 && slot >= 0 && slot < 36 && slots.get(slot).hasItem()) {
             if (type == ClickType.PICKUP) {
                 swapCurios(slots.get(slot), player, false);
@@ -271,6 +287,8 @@ public class ConvenientContainer extends AbstractContainerMenu {
     }
 
     private void swapCurios(Slot slot, Player player, boolean secondSlot) {
+        if (itemHasAtt(slot.index, true)) return;
+
         ItemStack curiosItem = null;
         ItemStack containerItem = slot.getItem();
         Slot curioSlot = null;
@@ -282,6 +300,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
                 }
                 curiosItem = cs.getItem();
                 curioSlot = cs;
+                if (itemHasAtt(cs.index, true)) return;
                 break;
             }
         }
