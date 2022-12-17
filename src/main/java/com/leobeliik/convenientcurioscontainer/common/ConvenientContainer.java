@@ -22,9 +22,7 @@ import top.theillusivec4.curios.common.inventory.CurioSlot;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConvenientContainer extends AbstractContainerMenu {
     private final ItemStackHandler ccItemHandler;
@@ -198,7 +196,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
         Slot slot;
         ItemStack existingStack;
 
-        if(stack.isStackable()) while (stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
+        if (stack.isStackable()) while (stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
             slot = slots.get(i);
 
             existingStack = slot.getItem();
@@ -225,17 +223,17 @@ public class ConvenientContainer extends AbstractContainerMenu {
             }
             i += iterOrder;
         }
-        if(stack.getCount() > 0) {
+        if (stack.getCount() > 0) {
             i = !r ? start : length - 1;
-            while(stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
+            while (stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
                 slot = slots.get(i);
                 existingStack = slot.getItem();
 
-                if(existingStack.isEmpty()) {
+                if (existingStack.isEmpty()) {
                     int maxStack = Math.min(stack.getMaxStackSize(), slot.getMaxStackSize());
                     int rmv = Math.min(maxStack, stack.getCount());
 
-                    if(slot.mayPlace(cloneStack(stack, rmv))) {
+                    if (slot.mayPlace(cloneStack(stack, rmv))) {
                         existingStack = stack.split(rmv);
                         slot.set(existingStack);
                         successful = true;
@@ -248,7 +246,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
     }
 
     private static ItemStack cloneStack(ItemStack stack, int size) {
-        if(stack.isEmpty())
+        if (stack.isEmpty())
             return ItemStack.EMPTY;
 
         ItemStack copy = stack.copy();
@@ -257,9 +255,25 @@ public class ConvenientContainer extends AbstractContainerMenu {
     }
     /* ***************************************************************************************************************************** */
 
+    public boolean itemHasAtt(int slot, boolean isSwap) {
+        //little hack for #5; to be fixed in 2.0 or when I have time
+        //TODO keep this in mind for the rewrite
+        int targetSlots = isSwap ? 0 : 72;
+        if (slot >= targetSlots && !getSlots().get(slot).getItem().isEmpty()) {
+            if (!CuriosApi.getCuriosHelper().getAttributeModifiers("", getSlots().get(slot).getItem()).isEmpty()) {
+                return CuriosApi.getCuriosHelper().getAttributeModifiers("", getSlots().get(slot).getItem()).asMap().values().stream().flatMap(Collection::stream).anyMatch(modifier ->
+                        CuriosApi.getSlotHelper().getSlotTypes().stream().anyMatch(slotType ->
+                                modifier.getName().equals(slotType.getIdentifier())));
+            }
+        }
+        return false;
+    }
+
     @ParametersAreNonnullByDefault
     @Override
     public void clicked(int slot, int mouseClick, ClickType type, Player player) {
+        if (itemHasAtt(slot, false)) return;
+
         if (mouseClick == 1 && slot >= 0 && slot < 36 && slots.get(slot).hasItem()) {
             if (type == ClickType.PICKUP) {
                 swapCurios(slots.get(slot), player, false);
@@ -273,6 +287,8 @@ public class ConvenientContainer extends AbstractContainerMenu {
     }
 
     private void swapCurios(Slot slot, Player player, boolean secondSlot) {
+        if (itemHasAtt(slot.index, true)) return;
+
         ItemStack curiosItem = null;
         ItemStack containerItem = slot.getItem();
         Slot curioSlot = null;
@@ -284,6 +300,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
                 }
                 curiosItem = cs.getItem();
                 curioSlot = cs;
+                if (itemHasAtt(cs.index, true)) return;
                 break;
             }
         }

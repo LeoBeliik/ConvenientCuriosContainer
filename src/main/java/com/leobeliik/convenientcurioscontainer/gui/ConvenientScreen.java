@@ -12,9 +12,12 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.common.inventory.CosmeticCurioSlot;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Collection;
 import java.util.List;
 
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
@@ -35,6 +38,7 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
     @ParametersAreNonnullByDefault
     @Override
     public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+        this.blit(ms, getX(), getY(), 0, 0, xSize, ySize);
         renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
         renderTooltip(ms, mouseX, mouseY);
@@ -46,6 +50,25 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
                             new TranslatableComponent("container_SRMB").withStyle(ChatFormatting.GRAY)),
                     java.util.Optional.empty(), mouseX, mouseY);
         }
+        renderWarningMessage(ms);
+    }
+
+    private void renderWarningMessage(PoseStack ms) {
+        if (super.getSlotUnderMouse() != null && super.getSlotUnderMouse().hasItem() && itemHasAtt(super.getSlotUnderMouse())) {
+            renderTooltip(ms,
+                    List.of(Component.nullToEmpty("Convenient CC can't fully handle this item"),
+                            Component.nullToEmpty("This will be fixed in V2.0")),
+                    java.util.Optional.empty(), getX() - 40, getY() - 15);
+        }
+    }
+
+    private boolean itemHasAtt(Slot slot) {
+        if (!CuriosApi.getCuriosHelper().getAttributeModifiers("", slot.getItem()).isEmpty()) {
+            return CuriosApi.getCuriosHelper().getAttributeModifiers("", slot.getItem()).asMap().values().stream().flatMap(Collection::stream).anyMatch(modifier ->
+                    CuriosApi.getSlotHelper().getSlotTypes().stream().anyMatch(slotType ->
+                            modifier.getName().equals(slotType.getIdentifier())));
+        }
+        return false;
     }
 
     @Override
