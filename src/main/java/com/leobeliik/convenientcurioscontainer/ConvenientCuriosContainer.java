@@ -29,7 +29,7 @@ import net.minecraftforge.client.ClientRegistry;
 
 @Mod("convenientcurioscontainer")
 public class ConvenientCuriosContainer {
-//TODO re write this mod for 1.19
+//TODO re write this mod for 1.20
     public static final String MODID = "convenientcurioscontainer";
     public static KeyMapping openConvenientKey;
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);

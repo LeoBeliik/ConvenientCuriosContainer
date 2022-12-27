@@ -258,6 +258,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
     public boolean itemHasAtt(int slot, boolean isSwap) {
         //little hack for #5; to be fixed in 2.0 or when I have time
         //TODO keep this in mind for the rewrite
+        if (CuriosApi.getSlotHelper() == null) return false;
         int targetSlots = isSwap ? 0 : 72;
         if (slot >= targetSlots && !getSlots().get(slot).getItem().isEmpty()) {
             if (!CuriosApi.getCuriosHelper().getAttributeModifiers("", getSlots().get(slot).getItem()).isEmpty()) {
