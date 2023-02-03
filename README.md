@@ -5,16 +5,12 @@
 <p align="center"> <b> 🔥 Curseforge:   </b> </p>
 <p align="center">
   <a href="https://www.curseforge.com/minecraft/mc-mods/convenient-curios-container" alt="Downloads">
-        <img src="http://cf.way2muchnoise.eu/544033.svg" /> </a>
-  <a href="https://www.curseforge.com/minecraft/mc-mods/convenient-curios-container" alt="Versions">
-        <img src="http://cf.way2muchnoise.eu/versions/544033.svg" /> </a>  
+        <img src="http://cf.way2muchnoise.eu/full_544033_downloads.svg" /> </a> 
 </p>
 <p align="center"> <b> 🔧 Modrinth:   </b> </p>
 <p align="center">
   <a href=https://modrinth.com/mod/convenient_curios_container alt="Downloads">
   <img src="https://img.shields.io/modrinth/dt/convenient_curios_container?color=00AF5C&label=Downloads&style=flat&logo=modrinth" /> </a>
-  <a href=https://modrinth.com/mod/convenient_curios_container alt="Versions">
-  <img src="https://img.shields.io/modrinth/game-versions/convenient_curios_container?color=00AF5C&label=Version&style=flat&logo=modrinth" /> </a>
 </p>
 <p align="center"> <b> Github: </b> </p>
 <p align="center">
