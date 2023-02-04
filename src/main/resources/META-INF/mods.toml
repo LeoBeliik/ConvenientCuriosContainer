@@ -5,7 +5,7 @@ licenseURL= "https://github.com/LeoBeliik/ConvenientCuriosContainer/blob/master/
 issueTrackerURL="https://github.com/LeoBeliik/ConvenientCuriosContainer/issues"
 [[mods]]
 modId="convenientcurioscontainer"
-version="1.${file.jarVersion}"
+version="${file.jarVersion}"
 displayName="Convenient Curios Container"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/ConvenientCuriosContainer"
 authors="LeoBeliik"

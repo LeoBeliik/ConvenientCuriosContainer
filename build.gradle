@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = "1.${modversion}-${mcversion}"
+version = "1.${modversion}-forge-${mcversion}"
 group = 'com.LeoBeliik.convenientcurioscontainer' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'convenientcurioscontainer'
 
@@ -102,12 +102,12 @@ tasks.register("version_up") {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "ConvenientCuriosContainer",
-                "Specification-Vendor"    : "Leobeliik",
-                "Specification-Version"   : "${modversion}_forge-${mcversion}",
-                "Implementation-Title"    : "ConvenientCuriosContainer",
-                "Implementation-Version"  : "${modversion}_forge-${mcversion}",
-                "Implementation-Vendor"   : "LeoBeliik",
+                "Specification-Title"     : mod_name,
+                "Specification-Vendor"    : mod_author,
+                "Specification-Version"   : project.jar.archiveVersion,
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Vendor"   : mod_author,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
