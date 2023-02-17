@@ -9,6 +9,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import top.theillusivec4.curios.api.event.SlotModifiersUpdatedEvent;
 
 @Mod("convenientcurioscontainer")
 public class ConvenientCuriosContainer {
@@ -82,6 +84,15 @@ public class ConvenientCuriosContainer {
     public void onCreativeModeTabBuildContents(CreativeModeTabEvent.BuildContents event) {
         if (event.getTab() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             event.accept(new ItemStack(CURIOS_CONTAINER_ITEM.get()));
+        }
+    }
+
+    @SubscribeEvent
+    public void onCuriosSlotsModified(SlotModifiersUpdatedEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            if (player.containerMenu instanceof ConvenientContainer convenientContainer) {
+                convenientContainer.clearSlots();
+            }
         }
     }
 }

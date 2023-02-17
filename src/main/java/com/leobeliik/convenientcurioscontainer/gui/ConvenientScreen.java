@@ -9,14 +9,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.common.inventory.CosmeticCurioSlot;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Collection;
 import java.util.List;
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
@@ -37,7 +34,6 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
     @Override
     public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
         renderBackground(ms);
-        renderWarningMessage(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
         renderTooltip(ms, mouseX, mouseY);
         if (mouseX > leftPos + 168 && mouseX < leftPos + 172 && mouseY > topPos + 3 && mouseY < topPos + 9) {
@@ -48,14 +44,6 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
                             Component.translatable("container_SRMB").withStyle(ChatFormatting.GRAY)),
                     java.util.Optional.empty(), mouseX, mouseY);
         }
-    }
-
-    private void renderWarningMessage(PoseStack ms) {//TODO remove
-        fill(ms, getX() - 12, getY() + 187, getX() + 192, getY() + 223, FastColor.ARGB32.color(255, 0, 0, 0)); //outer dark bg
-        fill(ms, getX() - 11, getY() + 188, getX() + 191, getY() + 222, FastColor.ARGB32.color(100, 255, 215, 0)); //middle gold bg
-        fill(ms, getX() - 10, getY() + 189, getX() + 190, getY() + 221, FastColor.ARGB32.color(255, 0, 0, 0)); //inner dark bg
-        font.drawWordWrap(Component.nullToEmpty("Items that modify Curios slots can't be unequipped inside CCC for the moment."), getX() - 7, getY() + 192, 210, 0xffffff);
-        font.drawWordWrap(Component.nullToEmpty("This will be fixed in future versions."), getX() - 7, getY() + 210, 200, 0xffffff);
     }
 
     @Override
