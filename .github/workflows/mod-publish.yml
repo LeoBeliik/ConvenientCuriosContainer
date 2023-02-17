@@ -34,6 +34,9 @@ jobs:
           set_var JAR_FILE $(eval echo build/libs/convenientcurioscontainer-*-*.jar)
           set_var MOD_VERSION $(echo ${JAR_FILE%.*} | cut -d- -f2)
           
+    - name: Install changelog parser
+      uses: taiki-e/install-action@parse-changelog
+          
     - name: Publish Minecraft Mods
       uses: Kir-Antipov/mc-publish@v3.2
       with:
