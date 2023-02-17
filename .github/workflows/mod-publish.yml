@@ -36,9 +36,6 @@ jobs:
 
     - name: Install changelog parser
       uses: taiki-e/install-action@parse-changelog
-
-    - name: Parse changelog
-      run: parse-changelog CHANGELOG.md ${{ env.MOD_VERSION }} > changes.md
           
     - name: Publish Minecraft Mods
       uses: Kir-Antipov/mc-publish@v3.2
@@ -54,7 +51,7 @@ jobs:
           version: ${{env.MOD_VERSION}}-${{github.ref_name}}
           java: Java 17
           modrinth-featured: false
-          changelog-file: changes.md
+          changelog-file: CHANGELOG.md
           
     - name: Cleanup Gradle Cache
       run: ./gradlew --stop |
