@@ -1,1 +1,1 @@
-Fixed crash on servers
+Fixed problems with Curios items that modify the amount of curios slots when equiped
