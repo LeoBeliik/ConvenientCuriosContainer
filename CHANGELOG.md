@@ -1,1 +1,1 @@
-Fixed problems with Curios items that modify the amount of curios slots when equipped
+Port to 1.19.4
