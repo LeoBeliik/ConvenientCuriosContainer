@@ -3,9 +3,9 @@ package com.leobeliik.convenientcurioscontainer.gui;
 import com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer;
 import com.leobeliik.convenientcurioscontainer.common.ConvenientContainer;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -32,13 +32,12 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
 
     @ParametersAreNonnullByDefault
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
         renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
         renderTooltip(ms, mouseX, mouseY);
         if (mouseX > leftPos + 168 && mouseX < leftPos + 172 && mouseY > topPos + 3 && mouseY < topPos + 9) {
-            //there has to be a better way to do this...
-            renderTooltip(ms,
+            ms.renderTooltip(font,
                     List.of(Component.translatable("container_info").withStyle(ChatFormatting.GRAY),
                             Component.translatable("container_RMB").withStyle(ChatFormatting.GRAY),
                             Component.translatable("container_SRMB").withStyle(ChatFormatting.GRAY)),
@@ -63,9 +62,9 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
 
     @ParametersAreNonnullByDefault
     @Override
-    protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.setShaderTexture(0, CONTAINER_BACKGROUND);
-        blit(ms, getX(), getY(), 0, 0, xSize, ySize); //Main screen bounds
+        ms.blit(CONTAINER_BACKGROUND, getX(), getY(), 0, 0, xSize, ySize); //Main screen bounds
         renderCurios(ms);
     }
 
@@ -74,15 +73,15 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
         return super.mouseDragged(mouseX, mouseY, mouseDragged, xAmount, yAmount);
     }
 
-    private void renderCurios(PoseStack ms) {
+    private void renderCurios(GuiGraphics ms) {
         //render top and bottom
         if (menu.curiosSize() > 0) {
             int barHeight = Math.min(menu.curiosSize(), 9) * 18 + 12;
-            blit(ms, leftPos - 24, topPos + 5, 186, 0, 25, 6); //top
-            blit(ms, leftPos - 24, topPos + barHeight, 186, 4, 25, 7); //bottom
+            ms.blit(CONTAINER_BACKGROUND, leftPos - 24, topPos + 5, 186, 0, 25, 6); //top
+            ms.blit(CONTAINER_BACKGROUND, leftPos - 24, topPos + barHeight, 186, 4, 25, 7); //bottom
             if (menu.hasCosmeticColumn()) {
-                blit(ms, leftPos - 43, topPos + 5, 186, 0, 24, 6); //top
-                blit(ms, leftPos - 43, topPos + barHeight, 186, 4, 24, 7); //bottom
+                ms.blit(CONTAINER_BACKGROUND, leftPos - 43, topPos + 5, 186, 0, 24, 6); //top
+                ms.blit(CONTAINER_BACKGROUND, leftPos - 43, topPos + barHeight, 186, 4, 24, 7); //bottom
             }
         }//blit(matrix, x, y, xtexture, ytexture, width, height)
 
@@ -90,11 +89,11 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
         for (int i = menu.getSlots().size() - 1; i >= 72; i--) {
             Slot slot = menu.getSlots().get(i);
             if (slot instanceof CosmeticCurioSlot) {
-                blit(ms, leftPos + slot.x - 6, topPos + slot.y - 2, 186, 11, 23, 19);
+                ms.blit(CONTAINER_BACKGROUND, leftPos + slot.x - 6, topPos + slot.y - 2, 186, 11, 23, 19);
             } else if (slot instanceof CurioSlot) {
-                blit(ms, leftPos + slot.x - 6, topPos + slot.y - 2, 186, 11, 25, 19);
+                ms.blit(CONTAINER_BACKGROUND, leftPos + slot.x - 6, topPos + slot.y - 2, 186, 11, 25, 19);
                 if (menu.hasCosmeticColumn()) { //render "empty" bg if has no cosmetic slot
-                    blit(ms, leftPos + slot.x - 25, topPos + slot.y - 2, 186, 31, 23, 19);
+                    ms.blit(CONTAINER_BACKGROUND, leftPos + slot.x - 25, topPos + slot.y - 2, 186, 31, 23, 19);
                 }
             }
         }
@@ -102,10 +101,10 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
         //render scrollbar
         if (menu.curiosSize() > 9) {
             int barxPos = menu.hasCosmeticColumn() ? leftPos - 48 : leftPos - 29;
-            blit(ms, barxPos, topPos + 5, 176, 0, 10, 176); //bar
+            ms.blit(CONTAINER_BACKGROUND, barxPos, topPos + 5, 176, 0, 10, 176); //bar
             int scrollXPos = menu.hasCosmeticColumn() ? leftPos - 44 : leftPos - 25;
             int scrollYPos = topPos + (currentScroll == 0 ? 12 : Math.min(166 / (menu.curiosSize() - 9) * currentScroll + 12, 166)); //Maths!
-            blit(ms, scrollXPos, scrollYPos, 186, 51, 5, 9); //scroll
+            ms.blit(CONTAINER_BACKGROUND, scrollXPos, scrollYPos, 186, 51, 5, 9); //scroll
         }
         //blit(matrix, x, y, xtexture, ytexture, width, height)
     }

@@ -8,6 +8,7 @@ import com.leobeliik.convenientcurioscontainer.networking.openConvenientContaine
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -20,7 +21,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -50,6 +51,7 @@ public class ConvenientCuriosContainer {
         Registry();
     }
 
+    @OnlyIn(Dist.CLIENT)
     private void keyRegistry(RegisterKeyMappingsEvent event) {
         openConvenientKey = new KeyMapping(new TranslatableContents("key.open_convenient_gui", null, TranslatableContents.NO_ARGS).getKey(),
                 InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), "key.categories.misc");
@@ -81,10 +83,9 @@ public class ConvenientCuriosContainer {
     }
 
     @SubscribeEvent
-    public void onCreativeModeTabBuildContents(CreativeModeTabEvent.BuildContents event) {
-        if (event.getTab() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+    public void onCreativeModeTabBuildContents(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS)
             event.accept(new ItemStack(CURIOS_CONTAINER_ITEM.get()));
-        }
     }
 
     @SubscribeEvent

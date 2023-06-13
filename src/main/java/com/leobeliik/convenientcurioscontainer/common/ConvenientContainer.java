@@ -203,7 +203,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
                 int maxStack = Math.min(stack.getMaxStackSize(), slot.getMaxStackSize());
                 int rmv = Math.min(maxStack, stack.getCount());
 
-                if (slot.mayPlace(cloneStack(stack, rmv)) && existingStack.getItem().equals(stack.getItem()) && ItemStack.tagMatches(stack, existingStack)) {
+                if (slot.mayPlace(cloneStack(stack, rmv)) && existingStack.getItem().equals(stack.getItem()) && ItemStack.isSameItemSameTags(stack, existingStack)) {
                     int existingSize = existingStack.getCount() + stack.getCount();
 
                     if (existingSize <= maxStack) {

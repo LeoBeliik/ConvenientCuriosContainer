@@ -14,7 +14,7 @@ public class ConvenientCurioSlots extends CurioSlot {
     private NonNullList<Boolean> renders;
 
     public ConvenientCurioSlots(Player player, IDynamicStackHandler handler, int index, String identifier, int xPosition, int yPosition, NonNullList<Boolean> renders) {
-        super(player, handler, index, identifier, xPosition, yPosition, renders);
+        super(player, handler, index, identifier, xPosition, yPosition, renders, false);
         this.handler = handler;
         this.index = index;
         this.identifier = identifier;
