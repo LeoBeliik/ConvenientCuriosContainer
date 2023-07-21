@@ -1,6 +1,6 @@
 {
   "parent": "convenientcurioscontainer:item/handheld",
   "textures": {
-    "layer0": "convenientcurioscontainer:item/curios_container"
+    "layer0": "convenientcurioscontainer:item/curio_tainer"
   }
 }

@@ -8,7 +8,7 @@ modId="convenientcurioscontainer"
 version="${file.jarVersion}"
 displayName="Convenient Curios Container"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/ConvenientCuriosContainer"
-authors="LeoBeliik"
+authors="LeoBeliik, LunarAntic"
 logoFile="ccc_logo.png"
 description='''
 A convenient way to store your trinkets!
