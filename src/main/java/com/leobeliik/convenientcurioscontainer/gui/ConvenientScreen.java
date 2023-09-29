@@ -33,7 +33,7 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
     @ParametersAreNonnullByDefault
     @Override
     public void render(GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(ms);
+        renderBackground(ms, mouseX, mouseY, partialTicks);
         super.render(ms, mouseX, mouseY, partialTicks);
         renderTooltip(ms, mouseX, mouseY);
         if (mouseX > leftPos + 168 && mouseX < leftPos + 172 && mouseY > topPos + 3 && mouseY < topPos + 9) {
@@ -46,18 +46,18 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double direction) {
-        if (direction > 0 && menu.canScroll(1)) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double directionH, double directionV) {
+        if (directionH > 0 && menu.canScroll(1)) {
             menu.scroll(1);
             currentScroll--;
             return true;
         }
-        if (direction < 0 && menu.canScroll(-1)) {
+        if (directionH < 0 && menu.canScroll(-1)) {
             menu.scroll(-1);
             currentScroll++;
             return true;
         }
-        return super.mouseScrolled(mouseX, mouseY, direction);
+        return super.mouseScrolled(mouseX, mouseY, directionH, directionV);
     }
 
     @ParametersAreNonnullByDefault

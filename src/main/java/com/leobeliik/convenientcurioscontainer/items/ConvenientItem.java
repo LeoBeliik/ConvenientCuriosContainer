@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.network.NetworkHooks;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -45,7 +44,8 @@ public class ConvenientItem extends Item {
         MenuProvider menuProvider = ConvenientMenuProvider.MenuProvider(itemStack);
 
         if (!level.isClientSide) {
-            NetworkHooks.openScreen((ServerPlayer) player, menuProvider);
+            ServerPlayer sender = (ServerPlayer) player;
+            sender.openMenu(menuProvider);
         }
 
         return InteractionResultHolder.fail(itemStack);

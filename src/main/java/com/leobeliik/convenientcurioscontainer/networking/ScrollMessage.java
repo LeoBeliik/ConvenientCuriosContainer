@@ -4,8 +4,7 @@ import com.leobeliik.convenientcurioscontainer.common.ConvenientContainer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraftforge.network.NetworkEvent;
-import java.util.function.Supplier;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 
 @SuppressWarnings("SameReturnValue")
 public class ScrollMessage {
@@ -23,9 +22,9 @@ public class ScrollMessage {
         return new ScrollMessage(buf.readInt());
     }
 
-    boolean handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            ServerPlayer player = ctx.get().getSender();
+    boolean handle(CustomPayloadEvent.Context ctx) {
+        ctx.enqueueWork(() -> {
+            ServerPlayer player = ctx.getSender();
             if (player != null) {
                 AbstractContainerMenu container = player.containerMenu;
                 if (container instanceof ConvenientContainer) {

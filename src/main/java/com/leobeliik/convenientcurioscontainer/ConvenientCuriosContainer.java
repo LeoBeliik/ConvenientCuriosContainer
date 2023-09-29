@@ -8,7 +8,6 @@ import com.leobeliik.convenientcurioscontainer.networking.openConvenientContaine
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -28,6 +27,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -78,7 +78,7 @@ public class ConvenientCuriosContainer {
     @SubscribeEvent //on mod keybind press
     public void onKeyInput(InputEvent event) {
         if (openConvenientKey.consumeClick()) {
-            Network.sendToServer(new openConvenientContainer());
+            Network.INSTANCE.send(new openConvenientContainer(0), PacketDistributor.SERVER.noArg());
         }
     }
 

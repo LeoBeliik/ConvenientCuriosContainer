@@ -7,15 +7,16 @@ import com.leobeliik.convenientcurioscontainer.common.slots.ConvenientCurioSlots
 import com.leobeliik.convenientcurioscontainer.items.ConvenientItem;
 import com.leobeliik.convenientcurioscontainer.networking.Network;
 import com.leobeliik.convenientcurioscontainer.networking.ScrollMessage;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.network.PacketDistributor;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
@@ -126,7 +127,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
         addCustomSlots();
         broadcastChanges();
         if (player.isLocalPlayer()) {
-            Network.sendToServer(new ScrollMessage(direction));
+            Network.INSTANCE.send(new ScrollMessage(direction), PacketDistributor.SERVER.noArg());
         }
     }
 
@@ -181,10 +182,10 @@ public class ConvenientContainer extends AbstractContainerMenu {
     }
 
     /*
-    * This was stolen from Quark
-    * https://github.com/VazkiiMods/Quark/blob/25e736f8828c8909ab765b9f2ea457d3b188902c/src/main/java/vazkii/quark/addons/oddities/inventory/BackpackMenu.java#L121
-    * I'll move all this logic to Forge Capabilities in the next version (2.0)
-    */
+     * This was stolen from Quark
+     * https://github.com/VazkiiMods/Quark/blob/25e736f8828c8909ab765b9f2ea457d3b188902c/src/main/java/vazkii/quark/addons/oddities/inventory/BackpackMenu.java#L121
+     * I'll move all this logic to Forge Capabilities in the next version (2.0)
+     */
     @Override
     protected boolean moveItemStackTo(ItemStack stack, int start, int length, boolean r) {
         boolean successful = false;
@@ -194,7 +195,7 @@ public class ConvenientContainer extends AbstractContainerMenu {
         Slot slot;
         ItemStack existingStack;
 
-        if(stack.isStackable()) while (stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
+        if (stack.isStackable()) while (stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
             slot = slots.get(i);
 
             existingStack = slot.getItem();
@@ -221,17 +222,17 @@ public class ConvenientContainer extends AbstractContainerMenu {
             }
             i += iterOrder;
         }
-        if(stack.getCount() > 0) {
+        if (stack.getCount() > 0) {
             i = !r ? start : length - 1;
-            while(stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
+            while (stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
                 slot = slots.get(i);
                 existingStack = slot.getItem();
 
-                if(existingStack.isEmpty()) {
+                if (existingStack.isEmpty()) {
                     int maxStack = Math.min(stack.getMaxStackSize(), slot.getMaxStackSize());
                     int rmv = Math.min(maxStack, stack.getCount());
 
-                    if(slot.mayPlace(cloneStack(stack, rmv))) {
+                    if (slot.mayPlace(cloneStack(stack, rmv))) {
                         existingStack = stack.split(rmv);
                         slot.set(existingStack);
                         successful = true;
@@ -244,13 +245,14 @@ public class ConvenientContainer extends AbstractContainerMenu {
     }
 
     private static ItemStack cloneStack(ItemStack stack, int size) {
-        if(stack.isEmpty())
+        if (stack.isEmpty())
             return ItemStack.EMPTY;
 
         ItemStack copy = stack.copy();
         copy.setCount(size);
         return copy;
     }
+
     /* ***************************************************************************************************************************** */
     public void clearSlots() {
         slots.clear();
