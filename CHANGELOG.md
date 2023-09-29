@@ -1,1 +1,1 @@
-Added item texture by LunarAntic
+Port to 1.20.2
