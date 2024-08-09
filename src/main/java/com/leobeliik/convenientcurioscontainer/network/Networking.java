@@ -14,6 +14,7 @@ public class Networking {
                 .versioned("1.0")
                 .optional();
         registrar.playToServer(PageChange.TYPE, PageChange.CODEC, PageChange::handle);
+        registrar.playToServer(SwitchCCC.TYPE, SwitchCCC.CODEC, SwitchCCC::handle);
     }
 
     public static void sendToServer(CustomPacketPayload msg) {

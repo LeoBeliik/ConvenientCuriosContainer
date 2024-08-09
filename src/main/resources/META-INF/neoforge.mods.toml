@@ -1,6 +1,8 @@
 modLoader="javafml"
 loaderVersion="${loader_version_range}"
-license="${mod_license}"
+license= "GNU LESSER GENERAL PUBLIC LICENSE"
+licenseURL= "https://github.com/LeoBeliik/ConvenientCuriosContainer/blob/master/LICENSE.txt"
+issueTrackerURL="https://github.com/LeoBeliik/ConvenientCuriosContainer/issues"
 
 [[mods]]
     modId="${mod_id}"
@@ -8,6 +10,8 @@ license="${mod_license}"
     displayName="${mod_name}"
     authors="${mod_authors}"
     description='''${mod_description}'''
+    displayURL="${mod_display_url}"
+    logoFile="${mod_logo_file}"
 
 [[dependencies."${mod_id}"]]
     modId="neoforge"
