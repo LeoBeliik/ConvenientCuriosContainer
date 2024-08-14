@@ -37,7 +37,6 @@ runs {
 
     server {
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
     }
 }
 
@@ -47,6 +46,7 @@ dependencies {
     implementation "top.theillusivec4.curios:curios-neoforge:${curiosversion}"
     runtimeOnly "curse.maven:relic-445274:5554968"
     runtimeOnly "curse.maven:octo-916747:5447735"
+    runtimeOnly "curse.maven:jei-238222:5623550"
 }
 
 tasks.withType(ProcessResources).configureEach {

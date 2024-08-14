@@ -2,13 +2,13 @@
   "parent": "minecraft:item/generated",
   "overrides": [
     {
-      "model": "convenientcurioscontainer:item/curios_container_open",
+      "model": "convenientcurioscontainer:item/convenient_container_open",
       "predicate": {
         "convenientcurioscontainer:open": 1.0
       }
     }
   ],
   "textures": {
-    "layer0": "convenientcurioscontainer:item/curios_container"
+    "layer0": "convenientcurioscontainer:item/convenient_container"
   }
 }

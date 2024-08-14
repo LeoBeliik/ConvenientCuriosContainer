@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
-
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
 public record PageChange(boolean next) implements CustomPacketPayload {
@@ -39,7 +38,6 @@ public record PageChange(boolean next) implements CustomPacketPayload {
             if (menu instanceof ConvenientMenu) {
                 ((ConvenientMenu) menu).ChangePage(next);
             }
-
         });
     }
 }

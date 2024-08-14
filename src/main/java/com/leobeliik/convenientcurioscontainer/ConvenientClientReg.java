@@ -21,16 +21,15 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.Lazy;
-
-import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.CURIOS_CONTAINER_ITEM;
+import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.CONVENIENT_ITEM;
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
 @Mod(value = MODID, dist = Dist.CLIENT)
-public class ClientReg {
-    private static final Lazy<KeyMapping> OPEN_CONTAINER_KEY = Lazy.of(() -> new KeyMapping(new TranslatableContents("key.open_convenient_gui", null,
+public class ConvenientClientReg {
+    public static final Lazy<KeyMapping> OPEN_CONVENIENT_SCREEN_KEY = Lazy.of(() -> new KeyMapping(new TranslatableContents("key.open_convenient_screen", null,
             TranslatableContents.NO_ARGS).getKey(), InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), "key.categories.misc"));
 
-    public ClientReg(IEventBus modEventBus, ModContainer modContainer) {
+    public ConvenientClientReg(IEventBus modEventBus, ModContainer modContainer) {
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::registerBindings);
         modEventBus.addListener(this::onClientReg);
@@ -42,17 +41,17 @@ public class ClientReg {
     }
 
     private void registerBindings(RegisterKeyMappingsEvent event) {
-        event.register(OPEN_CONTAINER_KEY.get());
+        event.register(OPEN_CONVENIENT_SCREEN_KEY.get());
     }
 
     private void registerItemModelProperties() {
-        ItemProperties.register(CURIOS_CONTAINER_ITEM.get(), ResourceLocation.fromNamespaceAndPath(MODID, "open"), (stack, a, b, c) ->
+        ItemProperties.register(CONVENIENT_ITEM.get(), ResourceLocation.fromNamespaceAndPath(MODID, "open"), (stack, a, b, c) ->
                 stack.getOrDefault(DataComponents.CUSTOM_MODEL_DATA, CustomModelData.DEFAULT).value());
     }
 
     @SubscribeEvent
     public void onKeyPressed(InputEvent.Key event) {
-        if (OPEN_CONTAINER_KEY.get().consumeClick()) {
+        if (OPEN_CONVENIENT_SCREEN_KEY.get().consumeClick()) {
             Networking.sendToServer(new SwitchCCC(true));
         }
     }

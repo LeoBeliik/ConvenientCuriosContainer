@@ -28,30 +28,30 @@ public class ConvenientCuriosContainer {
     public static final String MODID = "convenientcurioscontainer";
 
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-    static final DeferredItem<Item> CURIOS_CONTAINER_ITEM = ITEMS.register("curios_container", () ->
+    static final DeferredItem<Item> CONVENIENT_ITEM = ITEMS.register("convenient_container", () ->
             new ConvenientItem(new Item.Properties().stacksTo(1)));
 
     private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
-    public static final Supplier<MenuType<ConvenientMenu>> CURIOS_CONTAINER_MENU = MENUS.register("curios_container", () ->
-            new MenuType(ConvenientMenu::new, FeatureFlags.DEFAULT_FLAGS));
+    public static final Supplier<MenuType<ConvenientMenu>> CONVENIENT_MENU = MENUS.register("convenient_menu", () ->
+            new MenuType<>(ConvenientMenu::new, FeatureFlags.DEFAULT_FLAGS));
 
     public ConvenientCuriosContainer(IEventBus modEventBus, ModContainer modContainer) {
-        ITEMS.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);
+        ITEMS.register(modEventBus);
+        MENUS.register(modEventBus);
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::registerScreens);
         modEventBus.addListener(Networking::registerMessages);
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-        MENUS.register(modEventBus);
+        modContainer.registerConfig(ModConfig.Type.COMMON, ConvenientConfig.SPEC);
     }
 
     private void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(CURIOS_CONTAINER_MENU.get(), ConvenientScreen::new);
+        event.register(CONVENIENT_MENU.get(), ConvenientScreen::new);
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS)
-            event.accept(CURIOS_CONTAINER_ITEM);
+            event.accept(CONVENIENT_ITEM);
     }
 
     @SubscribeEvent

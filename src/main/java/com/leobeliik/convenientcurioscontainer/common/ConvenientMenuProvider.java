@@ -23,7 +23,7 @@ public class ConvenientMenuProvider {
             @Nonnull
             @Override
             public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-                return new ConvenientMenu(id, inventory);
+                return new ConvenientMenu(id, inventory, new ConvenientItemHandler(itemStack));
             }
         };
     }

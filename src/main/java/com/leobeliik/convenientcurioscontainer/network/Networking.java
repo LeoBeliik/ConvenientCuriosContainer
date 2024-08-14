@@ -4,7 +4,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
 public class Networking {

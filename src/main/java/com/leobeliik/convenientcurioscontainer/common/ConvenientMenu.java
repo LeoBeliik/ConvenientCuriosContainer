@@ -1,49 +1,41 @@
 package com.leobeliik.convenientcurioscontainer.common;
 
-import com.leobeliik.convenientcurioscontainer.Config;
 import com.leobeliik.convenientcurioscontainer.items.ConvenientItem;
 import com.leobeliik.convenientcurioscontainer.network.Networking;
 import com.leobeliik.convenientcurioscontainer.network.PageChange;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.TooltipProvider;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
 import top.theillusivec4.curios.common.inventory.container.CuriosContainer;
-
-import javax.annotation.Nonnull;
-
-import java.util.List;
-
-import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.CURIOS_CONTAINER_MENU;
+import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.CONVENIENT_MENU;
 
 public class ConvenientMenu extends AbstractContainerMenu {
-    private final ItemStackHandler ccItemHandler = new ItemStackHandler(54);
+    private final ItemStackHandler ccItemHandler;
     private final Player player;
-    public CuriosContainer container;
-    public static boolean isConvenient = false;
+    public final CuriosContainer container;
 
     public ConvenientMenu(int containerId, Inventory playerInv) {
-        super(CURIOS_CONTAINER_MENU.get(), containerId);
-        isConvenient = true;
-        this.player = playerInv.player;
-        this.container = new CuriosContainer(containerId, playerInv);
-        fillSlots(playerInv);
+        this(containerId, playerInv, new ItemStackHandler(54));
     }
 
-    private void fillSlots(Inventory inventory) {
+    ConvenientMenu(int containerId, Inventory playerInv, ItemStackHandler ccItemHandler) {
+        super(CONVENIENT_MENU.get(), containerId);
+        this.player = playerInv.player;
+        this.container = new CuriosContainer(containerId, playerInv);
+        this.ccItemHandler = ccItemHandler;
+        fillSlots();
+    }
+
+    private void fillSlots() {
         addContainerSlots();
-        addPlayerInvSlots(inventory);
+        addPlayerInvSlots();
         addCuriosSlots();
         broadcastChanges();
     }
@@ -58,26 +50,21 @@ public class ConvenientMenu extends AbstractContainerMenu {
     private void addContainerSlots() {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlot(new SlotItemHandler(ccItemHandler, j + i * 9, j * 18 + 8, i * 18 + 18) {
-                    @Override
-                    public boolean mayPlace(@Nonnull ItemStack stack) {
-                        return isItemValid(stack);
-                    }
-                });
+                addSlot(new SlotItemHandler(ccItemHandler, j + i * 9, j * 18 + 8, i * 18 + 18));
             }
         }
     }
 
-    private void addPlayerInvSlots(Inventory inventory) {
+    private void addPlayerInvSlots() {
         //add inventory slots
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlot(new Slot(inventory, j + i * 9 + 9, j * 18 + 8, i * 18 + 140));
+                addSlot(new Slot(player.getInventory(), j + i * 9 + 9, j * 18 + 8, i * 18 + 140));
             }
         }
         //add toolbar slot
         for (int i = 0; i < 9; i++) {
-            addSlot(new Slot(inventory, i, i * 18 + 8, 198));
+            addSlot(new Slot(player.getInventory(), i, i * 18 + 8, 198));
         }
     }
 
@@ -99,10 +86,6 @@ public class ConvenientMenu extends AbstractContainerMenu {
         }
 
         super.clicked(slot, mouseClick, type, player);
-    }
-
-    private boolean isItemValid(ItemStack stack) {
-        return CuriosApi.getCurio(stack).isPresent() && !Config.getForbiddenTrinkets().contains(stack.getItem());
     }
 
     @Override
@@ -147,13 +130,13 @@ public class ConvenientMenu extends AbstractContainerMenu {
             container.prevPage();
         }
 
-        fillSlots(player.getInventory());
+        fillSlots();
     }
 
     public void ClearSlots() {
         slots.clear();
         container.resetSlots();
-        fillSlots(player.getInventory());
+        fillSlots();
     }
 
     private void swapCurios(Slot slot, Player player, boolean secondSlot) {
@@ -197,5 +180,4 @@ public class ConvenientMenu extends AbstractContainerMenu {
             }
         }
     }
-
 }

@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomModelData;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
-
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
 public record SwitchCCC(boolean open) implements CustomPacketPayload {
@@ -39,16 +38,26 @@ public record SwitchCCC(boolean open) implements CustomPacketPayload {
         ctx.enqueueWork(() -> {
             ServerPlayer player = (ServerPlayer) ctx.player();
             ItemStack offItem = player.getItemInHand(InteractionHand.OFF_HAND);
-            player.getInventory().items.stream().filter(itemStack -> itemStack.getItem() instanceof ConvenientItem)
-                    .findFirst().ifPresent(itemStack -> interact(player, itemStack));
+            ItemStack onItem = player.getItemInHand(InteractionHand.MAIN_HAND);
+
+            if (onItem.getItem() instanceof ConvenientItem) {
+                interact(player, onItem); //check main hand first in case there's more than 1 item and it's earlier in the loop
+            } else if (offItem.getItem() instanceof ConvenientItem) {
+                interact(player, offItem);
+            } else {
+                player.getInventory().items.stream().filter(itemStack -> itemStack.getItem() instanceof ConvenientItem)
+                        .findFirst().ifPresent(itemStack -> interact(player, itemStack));
+            }
         });
     }
 
     private void interact(ServerPlayer player, ItemStack stack) {
         if (open) {
+            //set item sprite to open
             stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(1));
             player.openMenu(ConvenientMenuProvider.MenuProvider(stack));
         } else {
+            //set item sprite to closed
             stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(0));
         }
     }

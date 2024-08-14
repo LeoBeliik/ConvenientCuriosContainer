@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "C": {
+      "tag": "c:ingots/gold"
+    },
+    "c": {
+      "tag": "c:chests/wooden"
+    }
+  },
+  "pattern": [
+    " C ",
+    "CcI",
+    " C "
+  ],
+  "result": {
+    "count": 1,
+    "id": "convenientcurioscontainer:convenient_container"
+  }
+}
