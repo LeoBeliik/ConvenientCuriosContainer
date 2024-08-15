@@ -41,9 +41,7 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientMenu> im
 
     @Override
     protected void init() {
-        if (this.getMenu().container.totalPages > 0) {
-            this.addButtons();
-        }
+        this.addButtons();
         super.init();
     }
 
@@ -52,7 +50,7 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientMenu> im
     public void render(GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
         renderBackground(ms, mouseX, mouseY, partialTicks);
         super.render(ms, mouseX, mouseY, partialTicks);
-        if (this.getMenu().container.totalPages > 0) {
+        if (this.getMenu().container.totalPages > 1) {
             renderWidgets(ms, mouseX, mouseY, partialTicks);
         }
         renderTooltip(ms, mouseX, mouseY);
@@ -79,7 +77,7 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientMenu> im
     @Override
     protected void renderTooltip(@NotNull GuiGraphics ms, int mouseX, int mouseY) {
         //render button tooltips
-        if (btnNext.isMouseOver(mouseX, mouseY) || btnPrev.isMouseOver(mouseX, mouseY) && this.getMenu().container.totalPages > 0) {
+        if (this.getMenu().container.totalPages > 1 && (mouseX > 97 && mouseX < 216 && mouseY > 11 && mouseY < 23)) {
             ms.renderTooltip(font,
                     Component.translatable("gui.curios.page", (this.getMenu().container.currentPage + 1), this.getMenu().container.totalPages),
                     mouseX, mouseY);
@@ -98,10 +96,10 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientMenu> im
 
     private void addButtons() {
         addWidget(btnNext = Button.builder(Component.empty(), b -> this.getMenu().ChangePage(true))
-                .pos(this.getX() - 17, this.getY() + 2).size(11, 12).build());
+                .pos(this.getX() - 17, this.getY() + 2).size(11, 12).build()).visible = this.getMenu().container.totalPages > 1;
 
         addWidget(btnPrev = Button.builder(Component.empty(), b -> this.getMenu().ChangePage(false))
-                .pos(this.getX() - 28, this.getY() + 2).size(11, 12).build());
+                .pos(this.getX() - 28, this.getY() + 2).size(11, 12).build()).visible = this.getMenu().container.totalPages > 1;
     }
 
     private void renderWidgets(@Nonnull GuiGraphics guiGraphics, int x, int y, float partialTicks) {
