@@ -20,7 +20,7 @@
         <img src="https://img.shields.io/github/license/LeoBeliik/ConvenientCuriosContainer.svg?style=for-the-badge" /> </a>  
 </p>
   
-  <h5 align="center"><b>This Mod needs <a href= https://files.minecraftforge.net/net/minecraftforge/forge alt="FORGE"> FORGE</a> to work.</b></h5>
+  <h5 align="center"><b>This Mod needs <a href= https://neoforged.net/ alt="NEOFORGE"> NEOFORGE</a> to work.</b></h5>
   
   
   ## Description: 
