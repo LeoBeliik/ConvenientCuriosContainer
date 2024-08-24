@@ -1,5 +1,7 @@
-<h1 align="center"> Convenient Curios Container Minecraft mod</h1>
-<br/>
+<p align="center"><img width="350" height="250" src="/src/main/resources/ccc_logo.png"></p>
+
+<h1 align="center"> Convenient Curios Container - Minecraft mod</h1>
+
 <h3 align="center"> This mod allows you to easily manage your Curios items. </h3> 
 <br/>
 <p align="center"> <b> 🔥 Curseforge:   </b> </p>

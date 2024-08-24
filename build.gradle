@@ -16,7 +16,7 @@ repositories {
 }
 
 base {
-    archivesName = mod_id
+    archivesName = "ConvenientCuriosContainer-${version}_NeoForge-${minecraft_version}"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -44,9 +44,6 @@ runs {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
     implementation "top.theillusivec4.curios:curios-neoforge:${curiosversion}"
-    runtimeOnly "curse.maven:relic-445274:5554968"
-    runtimeOnly "curse.maven:octo-916747:5447735"
-    runtimeOnly "curse.maven:jei-238222:5623550"
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -70,19 +67,7 @@ tasks.withType(ProcessResources).configureEach {
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
-}
-
-publishing {
-    publications {
-        register('mavenJava', MavenPublication) {
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            url "file://${project.projectDir}/repo"
-        }
-    }
+    version = ""
 }
 
 idea {
