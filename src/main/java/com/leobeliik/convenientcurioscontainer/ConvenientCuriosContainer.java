@@ -90,7 +90,7 @@ public class ConvenientCuriosContainer {
 
     @SubscribeEvent
     public void onCreativeModeTabBuildContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS)
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES)
             event.accept(new ItemStack(CURIOS_CONTAINER_ITEM.get()));
     }
 }

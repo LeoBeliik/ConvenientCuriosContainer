@@ -1,7 +1,7 @@
 {
   "type": "minecraft:stonecutting",
   "ingredient": {
-    "item": "minecraft:chest"
+    "tag": "forge:chests/wooden"
   },
   "result": "convenientcurioscontainer:curios_container",
   "count": 1

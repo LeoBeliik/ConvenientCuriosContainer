@@ -1,24 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "C": {
-      "tag": "c:ingots/copper"
-    },
-    "c": {
-      "tag": "c:chests/wooden"
-    }
-  },
   "pattern": [
     " C ",
-    "CcI",
+    "CwI",
     " C "
   ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "w": {
+      "tag": "forge:chests/wooden"
+    }
+  },
   "result": {
-    "count": 1,
-    "id": "convenientcurioscontainer:curios_container"
+    "item": "convenientcurioscontainer:curios_container",
+    "count": 1
   }
 }
