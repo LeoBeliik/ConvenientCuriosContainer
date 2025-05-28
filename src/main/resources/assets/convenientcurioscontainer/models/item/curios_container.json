@@ -1,6 +1,12 @@
 {
-  "parent": "convenientcurioscontainer:item/handheld",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "convenientcurioscontainer:item/curios_container"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": { "custom_model_data": 1 },
+      "model": "convenientcurioscontainer:item/curios_container_open"
+    }
+  ]
 }

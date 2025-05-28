@@ -1,15 +1,16 @@
 package com.leobeliik.convenientcurioscontainer;
 
 import com.leobeliik.convenientcurioscontainer.common.ConvenientContainer;
+import com.leobeliik.convenientcurioscontainer.compat.ConvenientAccessoriesEventHandler;
+import com.leobeliik.convenientcurioscontainer.compat.ConvenientCuriosEventHandler;
 import com.leobeliik.convenientcurioscontainer.gui.ConvenientScreen;
 import com.leobeliik.convenientcurioscontainer.items.ConvenientItem;
 import com.leobeliik.convenientcurioscontainer.networking.Network;
-import com.leobeliik.convenientcurioscontainer.networking.openConvenientContainer;
+import com.leobeliik.convenientcurioscontainer.networking.OpenConvenientContainer;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -24,14 +25,13 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import top.theillusivec4.curios.api.event.SlotModifiersUpdatedEvent;
 
 @Mod("convenientcurioscontainer")
 public class ConvenientCuriosContainer {
@@ -39,7 +39,7 @@ public class ConvenientCuriosContainer {
     public static KeyMapping openConvenientKey;
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
-
+    public static boolean isAccessoriesLoaded;
 
     public ConvenientCuriosContainer() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -49,6 +49,12 @@ public class ConvenientCuriosContainer {
         bus.addListener(this::onCreativeModeTabBuildContents);
         Config.init();
         Registry();
+        isAccessoriesLoaded = ModList.get().isLoaded("accessories");
+        if (isAccessoriesLoaded) {
+            new ConvenientAccessoriesEventHandler();
+        } else {
+            MinecraftForge.EVENT_BUS.register(new ConvenientCuriosEventHandler());
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -78,7 +84,7 @@ public class ConvenientCuriosContainer {
     @SubscribeEvent //on mod keybind press
     public void onKeyInput(InputEvent event) {
         if (openConvenientKey.consumeClick()) {
-            Network.INSTANCE.send(new openConvenientContainer(0), PacketDistributor.SERVER.noArg());
+            Network.sendToServer(new OpenConvenientContainer());
         }
     }
 
@@ -86,14 +92,5 @@ public class ConvenientCuriosContainer {
     public void onCreativeModeTabBuildContents(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS)
             event.accept(new ItemStack(CURIOS_CONTAINER_ITEM.get()));
-    }
-
-    @SubscribeEvent
-    public void onCuriosSlotsModified(SlotModifiersUpdatedEvent event) {
-        if (event.getEntity() instanceof Player player) {
-            if (player.containerMenu instanceof ConvenientContainer convenientContainer) {
-                convenientContainer.clearSlots();
-            }
-        }
     }
 }

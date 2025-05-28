@@ -1,37 +1,51 @@
 package com.leobeliik.convenientcurioscontainer.networking;
 
 import com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.event.network.CustomPayloadEvent;
-import net.minecraftforge.network.Channel;
-import net.minecraftforge.network.ChannelBuilder;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.SimpleChannel;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class Network {
-    public static SimpleChannel INSTANCE;
-    private static final int id = 1;
+    private static SimpleChannel INSTANCE;
+    private static int id = 0;
 
-    public static void registerMessages() {
-        INSTANCE = ChannelBuilder.named(new ResourceLocation(ConvenientCuriosContainer.MODID))
-                .networkProtocolVersion(id)
-                .clientAcceptedVersions(Channel.VersionTest.exact(id))
-                .serverAcceptedVersions(Channel.VersionTest.exact(id)).simpleChannel();
-
-        register(ScrollMessage.class, ScrollMessage::encode, ScrollMessage::decode, ScrollMessage::handle);
-        register(openConvenientContainer.class, openConvenientContainer::encode, openConvenientContainer::decode, openConvenientContainer::handle);
+    private static int nextID() {
+        return id++;
     }
 
-    private static <M> void register(Class<M> messageType, BiConsumer<M, FriendlyByteBuf> encoder,
-                                     Function<FriendlyByteBuf, M> decoder,
-                                     BiConsumer<M, CustomPayloadEvent.Context> messageConsumer) {
-        INSTANCE.messageBuilder(messageType)
-                .decoder(decoder)
-                .encoder(encoder)
-                .consumerNetworkThread(messageConsumer)
+    public static void registerMessages() {
+        INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(ConvenientCuriosContainer.MODID),
+                () -> "1.0",
+                s -> true,
+                s -> true);
+
+        INSTANCE.messageBuilder(OpenConvenientContainer.class, nextID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(OpenConvenientContainer::new)
+                .encoder(OpenConvenientContainer::toBytes)
+                .consumerNetworkThread(OpenConvenientContainer::handle)
                 .add();
+
+        INSTANCE.messageBuilder(SlotChanged.class, nextID())
+                .decoder(SlotChanged::new)
+                .encoder(SlotChanged::toBytes)
+                .consumerNetworkThread(SlotChanged::handle)
+                .add();
+
+        INSTANCE.messageBuilder(PageChange.class, nextID())
+                .encoder(PageChange::encode)
+                .decoder(PageChange::decode)
+                .consumerNetworkThread(PageChange::handle)
+                .add();
+    }
+
+    public static void sendToServer(Object packet) {
+        INSTANCE.sendToServer(packet);
+    }
+
+    public static void sendToPlayer(Object packet, ServerPlayer player) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet);
     }
 }

@@ -25,11 +25,11 @@ public class ConvenientItem extends Item {
 
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        ConvenientStackHandler handler = new ConvenientStackHandler(stack, 36);
+        ConvenientStackHandler handler = new ConvenientStackHandler(stack, 54);
 
         if (nbt != null && nbt.contains("Parent")) {
             CompoundTag itemData = nbt.getCompound("Parent");
-            ItemStackHandler stacks = new ItemStackHandler(36);
+            ItemStackHandler stacks = new ItemStackHandler(54);
             stacks.deserializeNBT(itemData);
             nbt.remove("Parent");
         }
@@ -42,7 +42,7 @@ public class ConvenientItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         MenuProvider menuProvider = ConvenientMenuProvider.MenuProvider(itemStack);
-
+        itemStack.getOrCreateTag().putInt("CustomModelData", 1); //custom_model_data
         if (!level.isClientSide) {
             ServerPlayer sender = (ServerPlayer) player;
             sender.openMenu(menuProvider);

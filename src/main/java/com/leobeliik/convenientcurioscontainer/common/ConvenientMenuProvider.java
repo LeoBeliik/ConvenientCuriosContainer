@@ -25,13 +25,13 @@ public class ConvenientMenuProvider {
             @Nonnull
             @Override
             public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-                return new ConvenientContainer(id, inventory, getItemHandler(itemStack));
+                return new ConvenientContainer(id, inventory, getItemHandler(itemStack), itemStack);
             }
         };
     }
 
     private static ItemStackHandler getItemHandler(ItemStack stack) {
         return (ItemStackHandler) stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-                .orElse(new ConvenientStackHandler(stack, 36));
+                .orElse(new ConvenientStackHandler(stack, 54));
     }
 }

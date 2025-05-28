@@ -1,12 +1,8 @@
 package com.leobeliik.convenientcurioscontainer.common;
 
-import com.leobeliik.convenientcurioscontainer.Config;
 import com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer;
-import com.leobeliik.convenientcurioscontainer.common.slots.ConvenientCosmeticSlots;
-import com.leobeliik.convenientcurioscontainer.common.slots.ConvenientCurioSlots;
+import com.leobeliik.convenientcurioscontainer.compat.CompatHelper;
 import com.leobeliik.convenientcurioscontainer.items.ConvenientItem;
-import com.leobeliik.convenientcurioscontainer.networking.Network;
-import com.leobeliik.convenientcurioscontainer.networking.ScrollMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -16,137 +12,71 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.network.PacketDistributor;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
-import top.theillusivec4.curios.common.inventory.CurioSlot;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ConvenientContainer extends AbstractContainerMenu {
-    private final ItemStackHandler ccItemHandler;
     private final Player player;
-    private final List<ConvenientCurioSlots> curioSlots = new ArrayList<>();
-    private final List<ConvenientCosmeticSlots> cosmeticSlots = new ArrayList<>();
-    private List<Boolean> hasCosmetic = new ArrayList<>();
-    private boolean cosmeticColumn;
+    private final ItemStackHandler ccItemHandler;
+    private final ItemStack curioItem;
+    private int currentPage = 1, maxPage = 1;
+    public int curiosSize = 0;
 
     public ConvenientContainer(int windowId, Inventory playerInv, FriendlyByteBuf data) {
-        this(windowId, playerInv, new ItemStackHandler(36));
+        this(windowId, playerInv, new ItemStackHandler(54), null);
     }
 
-    ConvenientContainer(int id, Inventory inventory, ItemStackHandler ccItemHandler) {
+    ConvenientContainer(int id, Inventory inventory, ItemStackHandler ccItemHandler, ItemStack curioItem) {
         super(ConvenientCuriosContainer.CURIOS_CONTAINER_CONTAINER.get(), id);
-        this.ccItemHandler = ccItemHandler;
         this.player = inventory.player;
-        addSlots(inventory);
+        this.ccItemHandler = ccItemHandler;
+        this.curioItem = curioItem;
+        addSlots();
+    }
+
+    public void addSlots() {
+        super.slots.clear();
+        addContainerSlots();
+        addPlayerInvSlots();
+        addCuriosSlots();
+        broadcastChanges();
     }
 
     private void addContainerSlots() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 9; j++) {
                 addSlot(new SlotItemHandler(ccItemHandler, j + i * 9, j * 18 + 8, i * 18 + 18) {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack) {
-                        return isItemValid(stack);
+                        return CompatHelper.mayPlaceItem(stack) /* && !ConvenientConfig.getForbiddenTrinkets().contains(stack.getItem())*/;
                     }
                 });
             }
         }
     }
 
-    private void addPlayerInvSlots(Inventory inventory) {
+    private void addPlayerInvSlots() {
         //add inventory slots
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlot(new Slot(inventory, j + i * 9 + 9, j * 18 + 8, i * 18 + 104));
+                addSlot(new Slot(player.getInventory(), j + i * 9 + 9, j * 18 + 8, i * 18 + 140));
             }
         }
         //add toolbar slot
         for (int i = 0; i < 9; i++) {
-            if (inventory.getItem(i).getItem() instanceof ConvenientItem) {
-                addSlot(new Slot(inventory, i, i * 18 + 8, 162) {
-                    @ParametersAreNonnullByDefault
-                    @Override
-                    public boolean mayPickup(Player player) {
-                        return false;
-                    }
-                });
-            } else {
-                addSlot(new Slot(inventory, i, i * 18 + 8, 162));
-            }
+            addSlot(new Slot(player.getInventory(), i, i * 18 + 8, 198));
         }
     }
 
     private void addCuriosSlots() {
-        curioSlots.clear();
-        cosmeticSlots.clear();
-        CuriosApi.getCuriosHelper().getCuriosHandler(player).ifPresent(curios -> {
-            int slotY = 13;
-            for (Map.Entry<String, ICurioStacksHandler> entry : curios.getCurios().entrySet()) {
-                String name = entry.getKey();
-                ICurioStacksHandler curioStack = entry.getValue();
-                for (int i = 0; i < curioStack.getStacks().getSlots(); i++) {
-                    curioSlots.add(new ConvenientCurioSlots(player, curioStack.getStacks(), i, name, -18, slotY, curioStack.getRenders()));
-                    if (curioStack.hasCosmetic()) {
-                        cosmeticSlots.add(new ConvenientCosmeticSlots(player, curioStack.getCosmeticStacks(), i, name, -37, slotY));
-                        cosmeticColumn = true;
-                    }
-                    slotY += 18;
-                }
-            }
-        });
-        addCustomSlots();
-    }
-
-    private boolean isItemValid(ItemStack stack) {
-        return !CuriosApi.getCuriosHelper().getCurioTags(stack.getItem()).isEmpty()
-                && !Config.getForbiddenTrinkets().contains(stack.getItem().getName(stack).toString());
-    }
-
-    private void addCustomSlots() {
-        cosmeticSlots.stream().filter(cosmeticSlot -> cosmeticSlot.getY() >= 13 && cosmeticSlot.getY() <= 157).forEach(this::addSlot);
-        curioSlots.stream().filter(curioSlot -> curioSlot.getY() >= 13 && curioSlot.getY() <= 157).forEach(this::addSlot);
-    }
-
-    public void scroll(int direction) {
-        slots.removeIf(s -> s instanceof CurioSlot);
-        List<ConvenientCosmeticSlots> tempCosmetic = cosmeticSlots.stream().map(s ->
-                new ConvenientCosmeticSlots(player, s.getHandler(), s.getIndex(), s.getIdentifier(), s.getX(), s.getY() + 18 * direction)).toList();
-        cosmeticSlots.clear();
-        cosmeticSlots.addAll(tempCosmetic);
-
-        List<ConvenientCurioSlots> tempCurios = curioSlots.stream().map(s ->
-                new ConvenientCurioSlots(player, s.getHandler(), s.getIndex(), s.getIdentifier(), s.getX(), s.getY() + 18 * direction, s.getRenders())).toList();
-        curioSlots.clear();
-        curioSlots.addAll(tempCurios);
-
-        addCustomSlots();
-        broadcastChanges();
-        if (player.isLocalPlayer()) {
-            Network.INSTANCE.send(new ScrollMessage(direction), PacketDistributor.SERVER.noArg());
-        }
-    }
-
-    public boolean canScroll(int direction) {
-        int firstSlotY = curioSlots.get(0).getY();
-        int lastSlotY = curioSlots.get(curioSlots.size() - 1).getY();
-        return (direction != 1 || firstSlotY != 13) && (direction != -1 || lastSlotY > 157);
-    }
-
-    public int curiosSize() {
-        return curioSlots.size();
-    }
-
-    public List<Slot> getSlots() {
-        return slots;
-    }
-
-    public boolean hasCosmeticColumn() {
-        return cosmeticColumn;
+        List<Slot> slots = CompatHelper.curiosContainer(player);
+        int pageSize = 33;
+        int startIndex = (currentPage - 1) * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, slots.size());
+        this.maxPage = CompatHelper.ceilDiv(slots.size(), pageSize);
+        this.curiosSize = slots.size();
+        slots.subList(startIndex, endIndex).forEach(this::addSlot);
     }
 
     @ParametersAreNonnullByDefault
@@ -164,9 +94,10 @@ public class ConvenientContainer extends AbstractContainerMenu {
         if (slot.hasItem()) {
             ItemStack itemStackOG = slot.getItem();
             itemStackCopy = itemStackOG.copy();
-            int size = 36;
+            int size = 54;
+            int curioSlotSize = slots.size() - 90;
             if (index < size) {
-                if (!moveItemStackTo(itemStackOG, size, slots.size(), true)) {
+                if (!moveItemStackTo(itemStackOG, size, slots.size() - curioSlotSize, true)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!moveItemStackTo(itemStackOG, 0, size, false)) {
@@ -253,31 +184,24 @@ public class ConvenientContainer extends AbstractContainerMenu {
         return copy;
     }
 
-    /* ***************************************************************************************************************************** */
-    public void clearSlots() {
-        slots.clear();
-        addSlots(player.getInventory());
-    }
-
-    private void addSlots(Inventory inventory) {
-        addContainerSlots();
-        addPlayerInvSlots(inventory);
-        addCuriosSlots();
-        broadcastChanges();
-    }
-
     @ParametersAreNonnullByDefault
     @Override
     public void clicked(int slot, int mouseClick, ClickType type, Player player) {
-        if (mouseClick == 1 && slot >= 0 && slot < 36 && slots.get(slot).hasItem()) {
+        //prevent moving the ccc item
+        if (slot >= 54 && slot < 90 && getSlot(slot).hasItem()) {
+            if (getSlot(slot).getItem().getItem() instanceof ConvenientItem) return;
+        }
+
+        if (mouseClick == 1 && slot >= 0 && slot < 54 && getSlot(slot).hasItem()) {
             if (type == ClickType.PICKUP) {
-                swapCurios(slots.get(slot), player, false);
+                swapCurios(getSlot(slot), player, false);
                 return;
             } else if (type == ClickType.QUICK_MOVE) {
-                swapCurios(slots.get(slot), player, true);
+                swapCurios(getSlot(slot), player, true);
                 return;
             }
         }
+
         super.clicked(slot, mouseClick, type, player);
     }
 
@@ -285,8 +209,8 @@ public class ConvenientContainer extends AbstractContainerMenu {
         ItemStack curiosItem = null;
         ItemStack containerItem = slot.getItem();
         Slot curioSlot = null;
-        for (Slot cs : curioSlots) {
-            if (cs.mayPlace(containerItem)) {
+        for (Slot cs : this.slots) {
+            if (CompatHelper.isCurioSlot(cs) && cs.mayPlace(containerItem)) {
                 if (secondSlot) {
                     secondSlot = false;
                     continue;
@@ -320,6 +244,36 @@ public class ConvenientContainer extends AbstractContainerMenu {
                     slot.onTake(player, containerItem);
                 }
             }
+        }
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public void ChangePage(boolean b) {
+        slots.clear();
+        if (player.level().isClientSide()) {
+            CompatHelper.pageChange(b);
+        }
+
+        if (b && currentPage < maxPage) currentPage++;
+        if (!b && currentPage > 1) currentPage--;
+        addSlots();
+    }
+
+    public int getMaxPage() {
+        return maxPage;
+    }
+
+    @Override
+    public void removed(Player player) {
+        if (!player.level().isClientSide && curioItem != null) {
+            curioItem.getOrCreateTag().putInt("CustomModelData", 0);
         }
     }
 }

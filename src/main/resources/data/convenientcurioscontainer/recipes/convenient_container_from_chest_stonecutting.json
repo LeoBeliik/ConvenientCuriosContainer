@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:chest"
+  },
+  "result": "convenientcurioscontainer:curios_container",
+  "count": 1
+}
