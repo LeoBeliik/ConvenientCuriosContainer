@@ -15,7 +15,7 @@ public class ConvenientCuriosEventHandler {
         if (event.getEntity() instanceof Player player) {
             if (player.containerMenu instanceof ConvenientContainer convenientContainer) {
                 if (!player.level().isClientSide()) {
-                    Network.sendToPlayer(new SlotChanged(), (ServerPlayer) player);
+                    Network.sendToPlayer(new SlotChanged(player.getUUID()), (ServerPlayer) player);
                 }
                 convenientContainer.addSlots();
             }

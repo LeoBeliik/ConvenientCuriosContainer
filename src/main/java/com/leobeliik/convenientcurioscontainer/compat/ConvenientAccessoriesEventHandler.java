@@ -20,7 +20,7 @@ public class ConvenientAccessoriesEventHandler {
 
                 if (needSlotUpdate && changedContainers.isEmpty()) {
                     if (!player.level().isClientSide()) {
-                        Network.sendToPlayer(new SlotChanged(), (ServerPlayer) player);
+                        Network.sendToPlayer(new SlotChanged(player.getUUID()), (ServerPlayer) player);
                     }
                     menu.addSlots();
                     needSlotUpdate = false;

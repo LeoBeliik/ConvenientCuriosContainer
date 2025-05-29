@@ -29,8 +29,8 @@ public class Network {
                 .add();
 
         INSTANCE.messageBuilder(SlotChanged.class, nextID())
-                .decoder(SlotChanged::new)
-                .encoder(SlotChanged::toBytes)
+                .encoder(SlotChanged::encode)
+                .decoder(SlotChanged::decode)
                 .consumerNetworkThread(SlotChanged::handle)
                 .add();
 
