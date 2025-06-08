@@ -13,6 +13,7 @@ import io.wispforest.accessories.api.slot.SlotType;
 import io.wispforest.accessories.client.gui.AccessoriesInternalSlot;
 import io.wispforest.accessories.data.SlotGroupLoader;
 import io.wispforest.accessories.data.SlotTypeLoader;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
@@ -38,7 +39,9 @@ public class CompatHelper {
     }
 
     public static boolean mayPlaceItem(ItemStack stack) {
-        return !Config.getForbiddenTrinkets().contains(stack.getItem()) && (isAccessoriesLoaded ? AccessoriesAPI.getAccessory(stack) != null : CuriosApi.getCurio(stack).isPresent());
+        return Config.getForbiddenTrinkets().stream().noneMatch(ft ->
+                stack.getItemHolder().is(ResourceLocation.parse(ft))) &&
+                (isAccessoriesLoaded ? AccessoriesAPI.getAccessory(stack) != null : CuriosApi.getCurio(stack).isPresent());
     }
 
     public static boolean isCurioSlot(Slot slot) {
@@ -48,8 +51,8 @@ public class CompatHelper {
     public static void pageChange(boolean up) {
         Network.sendToServer(new PageChange(up));
     }
-	
-	  public static List<Slot> getCurioSlots(Player player) {
+
+    public static List<Slot> getCurioSlots(Player player) {
         List<Slot> slots = new ArrayList<>();
         var curiosHandler = CuriosApi.getCuriosInventory(player).orElse(null);
         int tall = 0, wide = 0;

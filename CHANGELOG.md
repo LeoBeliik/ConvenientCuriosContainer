@@ -1,1 +1,1 @@
-fix server crash
+fix config blacklist not working
