@@ -1,1 +1,1 @@
-fix config blacklist not working
+Fixed carried items being void when closing the container while holding an item in the cursor.  

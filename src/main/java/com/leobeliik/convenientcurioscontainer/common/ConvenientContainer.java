@@ -275,5 +275,6 @@ public class ConvenientContainer extends AbstractContainerMenu {
         if (!player.level().isClientSide && curioItem != null) {
             curioItem.getOrCreateTag().putInt("CustomModelData", 0);
         }
+        super.removed(player);
     }
 }
