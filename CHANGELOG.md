@@ -1,1 +1,1 @@
-Fixed carried items being void when closing the container while holding an item in the cursor.  
+Added dark mode config option.

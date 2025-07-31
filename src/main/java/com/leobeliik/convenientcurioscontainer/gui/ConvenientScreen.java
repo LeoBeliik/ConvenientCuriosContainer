@@ -1,5 +1,6 @@
 package com.leobeliik.convenientcurioscontainer.gui;
 
+import com.leobeliik.convenientcurioscontainer.Config;
 import com.leobeliik.convenientcurioscontainer.common.ConvenientContainer;
 import com.leobeliik.convenientcurioscontainer.compat.CompatHelper;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -12,12 +13,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
-import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.openConvenientKey;
 
 public class ConvenientScreen extends AbstractContainerScreen<ConvenientContainer> {
-    private static final ResourceLocation CONTAINER_BACKGROUND = new ResourceLocation(MODID, "textures/gui/convenient_screen.png");
+    private static ResourceLocation CONTAINER_BACKGROUND;
     private final int xSize = 176;
     private final int ySize = 222;
     private Button btnNext;
@@ -31,12 +32,13 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
 
     @Override
     protected void init() {
+        CONTAINER_BACKGROUND = Config.getEnableDarkMode();
         this.addButtons();
         super.init();
     }
 
     @Override
-    public void render(GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
         renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
         renderWidgets(ms, mouseX, mouseY, partialTicks);
@@ -50,6 +52,12 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
     }
 
     @Override
+    protected void renderLabels(GuiGraphics ms, int x, int y) {
+        ms.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 1447446, false);
+        ms.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 1447446, false);
+    }
+
+    @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         //close if the Inventory key or the mod key is pressed
         if (Minecraft.getInstance().options.keyInventory.matches(keyCode, scanCode) || openConvenientKey.matches(keyCode, scanCode)) {
@@ -60,7 +68,7 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientContaine
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics gg, int mouseX, int mouseY) {
+    protected void renderTooltip(@NotNull GuiGraphics gg, int mouseX, int mouseY) {
         //render information tooltip
         if (mouseX > this.getX() + 162 && mouseX < this.getX() + 172 && mouseY > this.getY() + 4 && mouseY < this.getY() + 14) {
             gg.renderTooltip(font,

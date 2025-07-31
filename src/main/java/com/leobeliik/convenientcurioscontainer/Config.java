@@ -1,11 +1,13 @@
 package com.leobeliik.convenientcurioscontainer;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import java.util.Collections;
 import java.util.List;
+import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainer.MODID;
 
 @Mod.EventBusSubscriber
 public class Config {
@@ -13,8 +15,9 @@ public class Config {
     private static ForgeConfigSpec COMMON_CONFIG;
     private static ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
     private static ForgeConfigSpec.ConfigValue<List<? extends String>> forbiddenTrinkets;
+    private static ForgeConfigSpec.BooleanValue enableDarkMode;
 
-    public static void init() {
+    static void init() {
         buildConfig();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
     }
@@ -28,11 +31,18 @@ public class Config {
                         "Example: \"curios:amulet\", \"curios:ring\".")
                 .defineList("forbiddenTrinkets", Collections.emptyList(), o -> o instanceof String);
 
+        enableDarkMode = COMMON_BUILDER.comment("Set to true to enable dark mode in the mod's GUI screen").define("enableDarkMode", false);
+
         COMMON_BUILDER.pop();
         COMMON_CONFIG = COMMON_BUILDER.build();
     }
 
     public static List<? extends String> getForbiddenTrinkets() {
         return forbiddenTrinkets.get();
+    }
+
+    public static ResourceLocation getEnableDarkMode() {
+        String darkMode = enableDarkMode.get() ? "textures/gui/convenient_screen_dark.png" : "textures/gui/convenient_screen.png";
+        return ResourceLocation.fromNamespaceAndPath(MODID, darkMode);
     }
 }
