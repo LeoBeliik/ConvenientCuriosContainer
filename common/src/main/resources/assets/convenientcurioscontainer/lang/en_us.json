@@ -6,5 +6,7 @@
   "key.open_convenient_screen": "Open Curios Container Screen",
   "config.forbidden_items": "Forbidden items list ",
   "config.forbidden_items.tooltip": "Blacklisted Items. \nAdd the name of the item to blacklist, modid:item_name format, separated by comma. \nExample: \"curios:amulet\", \"curios:ring\".",
+  "config.dark_mode": "Enable Dark mode",
+  "config.dark_mode.tooltip": "Set to true to set the mod's GUI on dark mode",
   "convenientcurioscontainer.configuration.section.convenientcurioscontainer.common.toml.title": "Convenient curios container config"
 }

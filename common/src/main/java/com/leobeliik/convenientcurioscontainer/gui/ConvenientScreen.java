@@ -1,6 +1,7 @@
 package com.leobeliik.convenientcurioscontainer.gui;
 
 import com.leobeliik.convenientcurioscontainer.common.ConvenientMenu;
+import com.leobeliik.convenientcurioscontainer.platform.Services;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -17,7 +18,7 @@ import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainerC
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainerCommon.OPEN_CONVENIENT_SCREEN_KEY;
 
 public class ConvenientScreen extends AbstractContainerScreen<ConvenientMenu> {
-    private static final ResourceLocation CONTAINER_BACKGROUND = ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/convenient_screen.png");
+    private static ResourceLocation CONTAINER_BACKGROUND;
     private final int xSize = 176;
     private final int ySize = 222;
     private Button btnNext;
@@ -31,8 +32,16 @@ public class ConvenientScreen extends AbstractContainerScreen<ConvenientMenu> {
 
     @Override
     protected void init() {
+        String darkMode = Services.PLATFORM.darkMode() ? "textures/gui/convenient_screen_dark.png" : "textures/gui/convenient_screen.png";
+        CONTAINER_BACKGROUND = ResourceLocation.fromNamespaceAndPath(MODID, darkMode);
         this.addButtons();
         super.init();
+    }
+
+    @Override
+    protected void renderLabels(GuiGraphics ms, int x, int y) {
+        ms.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 1447446, false);
+        ms.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 1447446, false);
     }
 
     @Override

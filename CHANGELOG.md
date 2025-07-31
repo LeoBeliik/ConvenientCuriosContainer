@@ -1,1 +1,1 @@
-Added Accessories compatibility.
+Added dark mode config option.

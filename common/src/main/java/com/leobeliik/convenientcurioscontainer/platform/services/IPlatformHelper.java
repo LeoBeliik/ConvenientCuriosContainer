@@ -55,4 +55,6 @@ public interface IPlatformHelper {
     boolean isCurioSlot(Slot slot);
 
     default void pageChange(boolean up) {}
+
+    default boolean darkMode() { return false; }
 }

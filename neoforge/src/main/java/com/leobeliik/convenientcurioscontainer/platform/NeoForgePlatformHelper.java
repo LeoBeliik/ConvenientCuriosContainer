@@ -61,4 +61,7 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     public void pageChange(boolean up) {
         Networking.sendToServer(new PageChange(up));
     }
+
+    @Override
+    public boolean darkMode() { return ConvenientConfig.getEnableDarkMode(); }
 }
