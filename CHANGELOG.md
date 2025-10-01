@@ -1,1 +1,2 @@
-Added dark mode config option.
+Added whitelist config option.
+Improved allowed item detection.

@@ -17,6 +17,7 @@ import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainerC
 public class ConvenientConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     private static Set<Item> forbiddenTrinkets;
+    private static Set<Item> allowedTrinkets;
     private static boolean enableDarkMode;
 
     private static final ModConfigSpec.ConfigValue<List<? extends String>> FORBIDDEN_TRINKETS = BUILDER
@@ -24,6 +25,12 @@ public class ConvenientConfig {
             .comment("Blacklisted Items - add the name of the item to blacklist, modid:item_name format, separated with comma.",
                     "Example: \"curios:amulet\", \"curios:ring\".")
             .defineListAllowEmpty("forbiddenTrinkets", Collections.emptyList(), () -> "", o -> o instanceof String);
+
+    private static final ModConfigSpec.ConfigValue<List<? extends String>> ALLOWED_TRINKETS = BUILDER
+            .translation("config.allowed_items")
+            .comment("Whitelisted Items - add the name of the item to whitelist, modid:item_name format, separated with comma.",
+                    "Example: \"curios:amulet\", \"curios:ring\".")
+            .defineListAllowEmpty("allowedTrinkets", Collections.emptyList(), () -> "", o -> o instanceof String);
 
     private static ModConfigSpec.BooleanValue DARK_MODE = BUILDER
             .translation("config.dark_mode")
@@ -38,11 +45,19 @@ public class ConvenientConfig {
                 .map(itemName -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemName)))
                 .collect(Collectors.toSet());
 
+        allowedTrinkets = ALLOWED_TRINKETS.get().stream()
+                .map(itemName -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemName)))
+                .collect(Collectors.toSet());
+
         enableDarkMode = DARK_MODE.getAsBoolean();
     }
 
     public static Set<Item> getForbiddenTrinkets() {
         return forbiddenTrinkets;
+    }
+
+    public static Set<Item> getAllowedTrinkets() {
+        return allowedTrinkets;
     }
 
     public static boolean getEnableDarkMode() {

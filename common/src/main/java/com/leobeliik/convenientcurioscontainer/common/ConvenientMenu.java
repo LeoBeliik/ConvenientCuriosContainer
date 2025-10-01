@@ -45,7 +45,7 @@ public class ConvenientMenu extends AbstractContainerMenu {
                 addSlot(new Slot(container, j + i * 9, j * 18 + 8, i * 18 + 18) {
                     @Override
                     public boolean mayPlace(@NotNull ItemStack stack) {
-                        return Services.PLATFORM.mayPlaceItem(stack) /* && !ConvenientConfig.getForbiddenTrinkets().contains(stack.getItem())*/;
+                        return Services.PLATFORM.mayPlaceItem(stack);
                     }
                 });
             }

@@ -49,7 +49,12 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public boolean mayPlaceItem(@NotNull ItemStack stack) {
-        return !ConvenientConfig.getForbiddenTrinkets().contains(stack.getItem()) && (isAccessoriesLoaded ? AccessoriesAPI.getAccessory(stack) != null : CuriosApi.getCurio(stack).isPresent());
+        if (ConvenientConfig.getForbiddenTrinkets().contains(stack.getItem()))
+            return false;
+        else if (ConvenientConfig.getAllowedTrinkets().contains(stack.getItem()))
+            return true;
+        else return stack.getTags().anyMatch(tag -> tag.toString().contains("curios") || tag.toString().contains("accessories"));
+        //&& (isAccessoriesLoaded ? AccessoriesAPI.getAccessory(stack) != null : CuriosApi.getCurio(stack).isPresent());
     }
 
     @Override
