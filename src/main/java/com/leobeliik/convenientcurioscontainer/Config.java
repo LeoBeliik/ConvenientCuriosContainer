@@ -15,6 +15,7 @@ public class Config {
     private static ForgeConfigSpec COMMON_CONFIG;
     private static ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
     private static ForgeConfigSpec.ConfigValue<List<? extends String>> forbiddenTrinkets;
+    private static ForgeConfigSpec.ConfigValue<List<? extends String>> allowedTrinkets;
     private static ForgeConfigSpec.BooleanValue enableDarkMode;
 
     static void init() {
@@ -31,6 +32,10 @@ public class Config {
                         "Example: \"curios:amulet\", \"curios:ring\".")
                 .defineList("forbiddenTrinkets", Collections.emptyList(), o -> o instanceof String);
 
+        allowedTrinkets = COMMON_BUILDER.comment("Whitelisted Items - add the name of the item to whitelist, modid:item_name format, separated with comma.",
+                        "Example: \"curios:amulet\", \"curios:ring\".")
+                .defineList("allowedTrinkets", Collections.emptyList(), o -> o instanceof String);
+
         enableDarkMode = COMMON_BUILDER.comment("Set to true to enable dark mode in the mod's GUI screen").define("enableDarkMode", false);
 
         COMMON_BUILDER.pop();
@@ -39,6 +44,10 @@ public class Config {
 
     public static List<? extends String> getForbiddenTrinkets() {
         return forbiddenTrinkets.get();
+    }
+
+    public static List<? extends String> getAllowedTrinkets() {
+        return allowedTrinkets.get();
     }
 
     public static ResourceLocation getEnableDarkMode() {

@@ -39,9 +39,11 @@ public class CompatHelper {
     }
 
     public static boolean mayPlaceItem(ItemStack stack) {
-        return Config.getForbiddenTrinkets().stream().noneMatch(ft ->
-                stack.getItemHolder().is(ResourceLocation.parse(ft))) &&
-                (isAccessoriesLoaded ? AccessoriesAPI.getAccessory(stack) != null : CuriosApi.getCurio(stack).isPresent());
+        if (Config.getForbiddenTrinkets().stream().anyMatch(ft -> stack.getItemHolder().is(ResourceLocation.parse(ft))))
+            return false;
+        else if (Config.getAllowedTrinkets().stream().anyMatch(ft -> stack.getItemHolder().is(ResourceLocation.parse(ft))))
+            return true;
+        else return stack.getTags().anyMatch(tag -> tag.toString().contains("curios") || tag.toString().contains("accessories"));
     }
 
     public static boolean isCurioSlot(Slot slot) {
