@@ -1,7 +1,6 @@
 package com.leobeliik.convenientcurioscontainer;
 
 import com.leobeliik.convenientcurioscontainer.common.ConvenientMenu;
-import com.leobeliik.convenientcurioscontainer.events.ConvenientAccessoriesEventHandler;
 import com.leobeliik.convenientcurioscontainer.events.ConvenientCuriosEventHandler;
 import com.leobeliik.convenientcurioscontainer.gui.ConvenientScreen;
 import com.leobeliik.convenientcurioscontainer.items.ConvenientItem;
@@ -13,7 +12,6 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -28,12 +26,11 @@ import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainerC
 public class ConvenientCuriosContainerNeoForge {
 
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-    static final DeferredItem<Item> CONVENIENT_ITEM = ITEMS.register("convenient_container", () ->
-            new ConvenientItem(new Item.Properties().stacksTo(1)));
+    private static final DeferredItem<Item> CONVENIENT_ITEM = ITEMS.register("convenient_container", ConvenientItem::new);
     private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
     public static final Supplier<MenuType<ConvenientMenu>> CONVENIENT_MENU = MENUS.register("convenient_menu", () ->
             new MenuType<>((id,inv) -> new ConvenientMenu(id, inv, CONVENIENT_ITEM.get().getDefaultInstance()), FeatureFlags.DEFAULT_FLAGS));
-    public static boolean isAccessoriesLoaded;
+    //public static boolean isAccessoriesLoaded;
 
     public ConvenientCuriosContainerNeoForge(IEventBus modEventBus, ModContainer modContainer) {
         MENUS.register(modEventBus);
@@ -41,12 +38,12 @@ public class ConvenientCuriosContainerNeoForge {
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::registerScreens);
         modEventBus.addListener(Networking::registerMessages);
-        isAccessoriesLoaded = ModList.get().isLoaded("accessories");
-        if (isAccessoriesLoaded) {
+        //isAccessoriesLoaded = ModList.get().isLoaded("accessories");
+        /*if (isAccessoriesLoaded) {
             new ConvenientAccessoriesEventHandler();
         } else {
-            NeoForge.EVENT_BUS.register(new ConvenientCuriosEventHandler());
-        }
+        }*/
+        NeoForge.EVENT_BUS.register(new ConvenientCuriosEventHandler());
         modContainer.registerConfig(ModConfig.Type.COMMON, ConvenientConfig.SPEC);
     }
 

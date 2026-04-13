@@ -1,29 +1,18 @@
 package com.leobeliik.convenientcurioscontainer.network;
 
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainerCommon.MODID;
 
 public class Networking {
 
+    @SubscribeEvent
     public static void registerMessages(RegisterPayloadHandlersEvent event) {
-        final PayloadRegistrar registrar = event.registrar(MODID)
-                .versioned("1.0")
-                .optional();
-        registrar.playToServer(PageChange.TYPE, PageChange.CODEC, PageChange::handle);
-        registrar.playToServer(SwitchCCC.TYPE, SwitchCCC.CODEC, SwitchCCC::handle);
-        registrar.playToClient(SlotChanged.TYPE, SlotChanged.CODEC, SlotChanged::handle);
-    }
+        final PayloadRegistrar registrar = event.registrar("1.0");
 
-    public static void sendToServer(CustomPacketPayload msg) {
-        PacketDistributor.sendToServer(msg);
-    }
-
-    public static void sendToClient(ServerPlayer player, CustomPacketPayload msg) {
-        PacketDistributor.sendToPlayer(player, msg);
+        registrar.playToServer(SwitchCCC.TYPE, SwitchCCC.CODEC, NetworkCCCHandler.getInstance()::handleSwitch);
+        registrar.playToServer(PageChange.TYPE, PageChange.CODEC, NetworkCCCHandler.getInstance()::handlePageChange);
+        registrar.playToClient(SlotChanged.TYPE, SlotChanged.CODEC, NetworkCCCHandler.getInstance()::handleSlotChanged);
     }
 }
 

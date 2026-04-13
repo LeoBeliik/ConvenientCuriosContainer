@@ -7,12 +7,12 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.item.component.ItemContainerContents;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -34,7 +34,8 @@ public class ConvenientMenu extends AbstractContainerMenu {
     public void addSlots() {
         super.slots.clear();
         addContainerSlots();
-        addPlayerInvSlots();
+        //they finally did it, they have a way to add player inv
+        this.addStandardInventorySlots(getPlayer().getInventory(), 8, 140);
         addCuriosSlots();
         broadcastChanges();
     }
@@ -45,23 +46,10 @@ public class ConvenientMenu extends AbstractContainerMenu {
                 addSlot(new Slot(container, j + i * 9, j * 18 + 8, i * 18 + 18) {
                     @Override
                     public boolean mayPlace(@NotNull ItemStack stack) {
-                        return Services.PLATFORM.mayPlaceItem(stack);
+                        return Services.PLATFORM.mayPlaceItem(stack, player);
                     }
                 });
             }
-        }
-    }
-
-    private void addPlayerInvSlots() {
-        //add inventory slots
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 9; j++) {
-                addSlot(new Slot(player.getInventory(), j + i * 9 + 9, j * 18 + 8, i * 18 + 140));
-            }
-        }
-        //add toolbar slot
-        for (int i = 0; i < 9; i++) {
-            addSlot(new Slot(player.getInventory(), i, i * 18 + 8, 198));
         }
     }
 
@@ -76,17 +64,17 @@ public class ConvenientMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void clicked(int slot, int mouseClick, @NotNull ClickType type, @NotNull Player player) {
+    public void clicked(int slot, int mouseClick, @NonNull ContainerInput type, @NonNull Player player) {
         //prevent moving the ccc item
         if (slot >= 54 && slot < 90 && getSlot(slot).hasItem()) {
             if (getSlot(slot).getItem().getItem() instanceof ConvenientItem) return;
         }
 
         if (mouseClick == 1 && slot >= 0 && slot < 54 && getSlot(slot).hasItem()) {
-            if (type == ClickType.PICKUP) {
+            if (type == ContainerInput.PICKUP) {
                 swapCurios(getSlot(slot), player, false);
                 return;
-            } else if (type == ClickType.QUICK_MOVE) {
+            } else if (type == ContainerInput.QUICK_MOVE) {
                 swapCurios(getSlot(slot), player, true);
                 return;
             }
@@ -170,7 +158,7 @@ public class ConvenientMenu extends AbstractContainerMenu {
     private void loadItems() {
         ItemContainerContents component = item.get(DataComponents.CONTAINER);
         if (component != null) {
-            List<ItemStack> items = component.stream().toList();
+            List<ItemStack> items = component.allItemsCopyStream().toList();
             for (int i = 0; i < items.size() && i < 54; i++) {
                 container.setItem(i, items.get(i));
             }
@@ -186,7 +174,7 @@ public class ConvenientMenu extends AbstractContainerMenu {
     public void removed(@NotNull Player player) {
         super.removed(player);
         item.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(container.getItems()));
-        item.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(0));
+        ConvenientItem.setModel(item, false);
     }
 
     public int getCurrentPage() {

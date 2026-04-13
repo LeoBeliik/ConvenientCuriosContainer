@@ -10,5 +10,5 @@ public class ConvenientCuriosContainerCommon {
             new TranslatableContents("key.open_convenient_screen", "Open Curios Container", TranslatableContents.NO_ARGS).getKey(),
             InputConstants.Type.KEYSYM,
             InputConstants.UNKNOWN.getValue(),
-            "key.categories.misc");
+            KeyMapping.Category.MISC);
 }

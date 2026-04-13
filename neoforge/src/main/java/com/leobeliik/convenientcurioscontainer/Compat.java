@@ -1,6 +1,6 @@
 package com.leobeliik.convenientcurioscontainer;
 
-import com.google.common.collect.ImmutableSet;
+/*import com.google.common.collect.ImmutableSet;
 import io.wispforest.accessories.Accessories;
 import io.wispforest.accessories.api.AccessoriesAPI;
 import io.wispforest.accessories.api.AccessoriesCapability;
@@ -10,6 +10,9 @@ import io.wispforest.accessories.api.slot.SlotType;
 import io.wispforest.accessories.data.SlotGroupLoader;
 import io.wispforest.accessories.data.SlotTypeLoader;
 import io.wispforest.accessories.menu.AccessoriesInternalSlot;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;*/
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -17,7 +20,6 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 import top.theillusivec4.curios.common.inventory.CurioSlot;
 import java.util.*;
-import java.util.stream.Stream;
 
 public abstract class Compat {
 
@@ -40,7 +42,7 @@ public abstract class Compat {
                     slots.add(new CurioSlot(player, stackHandler, i, identifier,
                             wide * 18 - 20,
                             tall * 18 + 18, stacksHandler.getActiveStates(), stacksHandler.getRenders(),
-                            stacksHandler.canToggleRendering(), false, false) {
+                            stacksHandler.canToggleRendering(), false) {
                         @Override
                         public String toString() {
                             return "curios.identifier." + identifier;
@@ -53,7 +55,7 @@ public abstract class Compat {
         return slots;
     }
 
-    public static List<Slot> getAccessoriesSlots(Player player) {
+    /*public static List<Slot> getAccessoriesSlots(Player player) {
         List<Slot> slots = new ArrayList<>();
         ImmutableSet<SlotType> usedSlots = ImmutableSet.copyOf(AccessoriesAPI.getUsedSlotsFor(player));
 
@@ -96,5 +98,5 @@ public abstract class Compat {
         }
 
         return slots;
-    }
+    }*/
 }

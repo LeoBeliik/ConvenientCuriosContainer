@@ -1,3 +1,4 @@
+/*
 package com.leobeliik.convenientcurioscontainer.events;
 
 import com.leobeliik.convenientcurioscontainer.common.ConvenientMenu;
@@ -28,3 +29,4 @@ public class ConvenientAccessoriesEventHandler {
         });
     }
 }
+*/

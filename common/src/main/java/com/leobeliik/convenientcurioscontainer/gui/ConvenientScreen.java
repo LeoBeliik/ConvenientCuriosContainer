@@ -2,147 +2,140 @@ package com.leobeliik.convenientcurioscontainer.gui;
 
 import com.leobeliik.convenientcurioscontainer.common.ConvenientMenu;
 import com.leobeliik.convenientcurioscontainer.platform.Services;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import java.util.List;
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainerCommon.MODID;
 import static com.leobeliik.convenientcurioscontainer.ConvenientCuriosContainerCommon.OPEN_CONVENIENT_SCREEN_KEY;
 
 public class ConvenientScreen extends AbstractContainerScreen<ConvenientMenu> {
-    private static ResourceLocation CONTAINER_BACKGROUND;
-    private final int xSize = 176;
-    private final int ySize = 222;
-    private Button btnNext;
-    private Button btnPrev;
+	private static Identifier CONTAINER_BACKGROUND;
+	private final int xSize = 176;
+	private final int ySize = 222;
+	private Button btnNext;
+	private Button btnPrev;
 
     public ConvenientScreen(ConvenientMenu container, Inventory inventory, Component title) {
-        super(container, inventory, title);
-        imageHeight = 222;
+        super(container, inventory, title, 176, 222);
         inventoryLabelY = 129;
     }
 
-    @Override
-    protected void init() {
-        String darkMode = Services.PLATFORM.darkMode() ? "textures/gui/convenient_screen_dark.png" : "textures/gui/convenient_screen.png";
-        CONTAINER_BACKGROUND = ResourceLocation.fromNamespaceAndPath(MODID, darkMode);
-        this.addButtons();
-        super.init();
-    }
+	@Override
+	protected void init() {
+		String darkMode = Services.PLATFORM.darkMode() ? "textures/gui/convenient_screen_dark.png" : "textures/gui/convenient_screen.png";
+		CONTAINER_BACKGROUND = Identifier.fromNamespaceAndPath(MODID, darkMode);
+		this.addButtons();
+		super.init();
+	}
 
-    @Override
-    protected void renderLabels(GuiGraphics ms, int x, int y) {
-        ms.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 1447446, false);
-        ms.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 1447446, false);
-    }
+	@Override
+	public void extractRenderState(@NotNull GuiGraphicsExtractor stack, int mouseX, int mouseY, float partialTicks) {
+		stack.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, getX(), getY(), 0, 0, xSize, ySize, 256, 256);
+		renderCurios(stack, mouseX, mouseY, partialTicks);
+		super.extractRenderState(stack, mouseX, mouseY, partialTicks);
+		extractTooltip(stack, mouseX, mouseY);
+		stack.text(this.font, this.title, this.titleLabelX, this.titleLabelY, 1447446, false);
+		stack.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 1447446, false);
+	}
 
-    @Override
-    public void render(@NotNull GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(ms, mouseX, mouseY, partialTicks);
-        super.render(ms, mouseX, mouseY, partialTicks);
-        renderWidgets(ms, mouseX, mouseY, partialTicks);
-        renderTooltip(ms, mouseX, mouseY);
-    }
+	@Override
+	public boolean keyPressed(@NonNull KeyEvent event) {
+		//close if the Inventory key or the mod key is pressed
+		if (Minecraft.getInstance().options.keyInventory.matches(event) || OPEN_CONVENIENT_SCREEN_KEY.matches(event)) {
+			this.onClose();
+			return true;
+		}
+		return super.keyPressed(event);
+	}
 
-    @Override
-    protected void renderBg(GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        RenderSystem.setShaderTexture(0, CONTAINER_BACKGROUND);
-        ms.blit(CONTAINER_BACKGROUND, getX(), getY(), 0, 0, xSize, ySize); //Main screen bounds
-    }
+	@Override
+	protected void extractTooltip(@NotNull GuiGraphicsExtractor gg, int mouseX, int mouseY) {
+		//render information tooltip
+		if (mouseX > this.getX() + 162 && mouseX < this.getX() + 172 && mouseY > this.getY() + 4 && mouseY < this.getY() + 14) {
+			gg.setTooltipForNextFrame(font,
+					List.of(Component.translatable("gui.container_info").withStyle(ChatFormatting.AQUA),
+							Component.translatable("gui.container_RMB").withStyle(ChatFormatting.GRAY),
+							Component.translatable("gui.container_SRMB").withStyle(ChatFormatting.GRAY)),
+					java.util.Optional.empty(), mouseX, mouseY + 5);
+		}
+		//Button page tooltip
+		int maxPage = this.getMenu().getMaxPage();
+		if (maxPage > 1 && (mouseX >= btnPrev.getX() && mouseX <= btnPrev.getX() + 23 && mouseY >= btnNext.getY() && mouseY <= btnNext.getY() + 12))
+			gg.setTooltipForNextFrame(font, Component.translatable("gui.curios.page", this.getMenu().getCurrentPage(), maxPage), mouseX, mouseY);
 
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        //close if the Inventory key or the mod key is pressed
-        if (Minecraft.getInstance().options.keyInventory.matches(keyCode, scanCode) || OPEN_CONVENIENT_SCREEN_KEY.matches(keyCode, scanCode)) {
-            this.onClose();
-            return true;
-        }
-        return super.keyPressed(keyCode, scanCode, modifiers);
-    }
+		for (Slot slot : this.menu.slots.subList(90, this.menu.slots.size())) {
+			boolean mouseInSlot = mouseX >= leftPos + slot.x && mouseX <= leftPos + slot.x + 16 && mouseY >= topPos + slot.y && mouseY <= topPos + slot.y + 16;
+			if (slot.getItem().isEmpty() && mouseInSlot) {
+				gg.setTooltipForNextFrame(font, Component.translatable(slot.toString()), mouseX, mouseY);
+			}
+		}
 
-    @Override
-    protected void renderTooltip(@NotNull GuiGraphics gg, int mouseX, int mouseY) {
-        //render information tooltip
-        if (mouseX > this.getX() + 162 && mouseX < this.getX() + 172 && mouseY > this.getY() + 4 && mouseY < this.getY() + 14) {
-            gg.renderTooltip(font,
-                    List.of(Component.translatable("gui.container_info").withStyle(ChatFormatting.AQUA),
-                            Component.translatable("gui.container_RMB").withStyle(ChatFormatting.GRAY),
-                            Component.translatable("gui.container_SRMB").withStyle(ChatFormatting.GRAY)),
-                    java.util.Optional.empty(), mouseX, mouseY + 5);
-        }
-        //Button page tooltip
-        int maxPage = this.getMenu().getMaxPage();
-        if (maxPage > 1 && (mouseX >= btnPrev.getX() && mouseX <= btnPrev.getX() + 23 && mouseY >= btnNext.getY() && mouseY <= btnNext.getY() + 12))
-            gg.renderTooltip(font, Component.translatable("gui.curios.page", this.getMenu().getCurrentPage(), maxPage), mouseX, mouseY);
+		super.extractTooltip(gg, mouseX, mouseY);
+	}
 
-        for (Slot slot : this.menu.slots.subList(90, this.menu.slots.size())) {
-            boolean mouseInSlot = mouseX >= leftPos + slot.x && mouseX <= leftPos + slot.x + 16 && mouseY >= topPos + slot.y && mouseY <= topPos + slot.y + 16;
-            if (slot.getItem().isEmpty() && mouseInSlot) {
-                gg.renderTooltip(font, Component.translatable(slot.toString()), mouseX, mouseY);
-            }
-        }
+	private void renderCurios(GuiGraphicsExtractor stack, int mouseX, int mouseY, float partialTicks) {
+		int size = this.menu.slots.size();
+		int curiosSize = this.menu.curiosSize;
+		int currentPage = this.menu.getCurrentPage();
 
-        super.renderTooltip(gg, mouseX, mouseY);
-    }
+		//render next/prev buttons
+		stack.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, btnNext.getX(), btnNext.getY(), 188, 0, btnNext.getWidth(), btnNext.getHeight(), 256, 256);
+		stack.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, btnPrev.getX(), btnPrev.getY(), 176, 0, btnPrev.getWidth(), btnPrev.getHeight(), 256, 256);
 
-    private void addButtons() {
-        addWidget(btnNext = Button.builder(Component.empty(), b -> this.getMenu().ChangePage(true))
-                .pos(this.getX() - 13, this.getY()).size(12, 12).build());
+		//render next/prev buttons overlay
+		btnNext.active = true;// this.menu.getMaxPage() != currentPage;
+		if (btnNext.isActive() && btnNext.isMouseOver(mouseX, mouseY)) {
+			stack.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, btnNext.getX(), btnNext.getY(), 200, 0, btnNext.getWidth(), btnNext.getHeight(), 256, 256);
+		}
 
-        addWidget(btnPrev = Button.builder(Component.empty(), b -> this.getMenu().ChangePage(false))
-                .pos(this.getX() - 25, this.getY()).size(12, 12).build());
-    }
+		btnPrev.active = true;// currentPage > 1;
+		if (btnPrev.isActive() && btnPrev.isMouseOver(mouseX, mouseY)) {
+			stack.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, btnPrev.getX(), btnPrev.getY(), 200, 0, btnPrev.getWidth(), btnPrev.getHeight(), 256, 256);
+		}
 
-    private void renderWidgets(GuiGraphics gg, int mouseX, int mouseY, float partialTicks) {
-        int size = this.menu.slots.size();
-        int curiosSize = this.menu.curiosSize;
-        int currentPage = this.menu.getCurrentPage();
-
-        //render next/prev buttons
-        gg.blit(CONTAINER_BACKGROUND, btnNext.getX(), btnNext.getY(), 188F, 0F, btnNext.getWidth(), btnNext.getHeight(), 256, 256);
-        gg.blit(CONTAINER_BACKGROUND, btnPrev.getX(), btnPrev.getY(), 176F, 0F, btnPrev.getWidth(), btnPrev.getHeight(), 256, 256);
-
-        //render next/prev buttons overlay
-        btnNext.active = this.menu.getMaxPage() != currentPage;
-        if (btnNext.isActive() && btnNext.isMouseOver(mouseX, mouseY)) {
-            gg.blit(CONTAINER_BACKGROUND, btnNext.getX(), btnNext.getY(), 200F, 0F, btnNext.getWidth(), btnNext.getHeight(), 256, 256);
-        }
-
-        btnPrev.active = currentPage > 1;
-        if (btnPrev.isActive() && btnPrev.isMouseOver(mouseX, mouseY)) {
-            gg.blit(CONTAINER_BACKGROUND, btnPrev.getX(), btnPrev.getY(), 200F, 0F, btnPrev.getWidth(), btnPrev.getHeight(), 256, 256);
-        }
-
-        //curios slot background
+		//curios slot background
         for (int i = 0; i < Math.min(Math.ceilDiv(curiosSize - (33 * (currentPage - 1)), 11), 3); i++) {
-            gg.blit(CONTAINER_BACKGROUND, leftPos - 26 - (18 * i), topPos + 12, 176, 12, (i == 0) ? 26 : 23, 210);
+            stack.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, leftPos - 26 - (18 * i), topPos + 12, 176, 12, (i == 0) ? 26 : 23, 222, 256, 256);
         }
 
         //render curios slots
         for (Slot slot : this.menu.slots.subList(90, Math.min(123, size))) {
-            gg.blit(CONTAINER_BACKGROUND, leftPos + slot.x - 1, topPos + slot.y, 7, 17, 18, 18);
+            stack.blit(RenderPipelines.GUI_TEXTURED, CONTAINER_BACKGROUND, leftPos + slot.x - 1, topPos + slot.y, 7, 17, 18, 18, 256, 256);
         }
 
-    }
+	}
 
-    private int getX() {
-        return (this.width - xSize) / 2;
-    }
+	private void addButtons() {
+		addWidget(btnNext = Button.builder(Component.empty(), b -> this.getMenu().ChangePage(true))
+				.pos(this.getX() - 13, this.getY()).size(12, 12).build());
+
+		addWidget(btnPrev = Button.builder(Component.empty(), b -> this.getMenu().ChangePage(false))
+				.pos(this.getX() - 25, this.getY()).size(12, 12).build());
+	}
+
+	private int getX() {
+		return (this.width - xSize) / 2;
+	}
 
     private int getY() {
-        return (this.height - ySize) / 2;
+	    //I have NO IDEA why I need the +28 but it works..
+	    return ((this.height - ySize) / 2);
     }
 
-    @Override
-    public void onClose() {
-        super.onClose();
-    }
+	@Override
+	public void onClose() {
+		super.onClose();
+	}
 }

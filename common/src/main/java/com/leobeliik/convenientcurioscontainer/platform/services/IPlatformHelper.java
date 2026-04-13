@@ -1,5 +1,6 @@
 package com.leobeliik.convenientcurioscontainer.platform.services;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
@@ -50,7 +51,7 @@ public interface IPlatformHelper {
         return new ArrayList<>();
     }
 
-    boolean mayPlaceItem(@NotNull ItemStack stack);
+    boolean mayPlaceItem(@NotNull ItemStack stack, LivingEntity player);
 
     boolean isCurioSlot(Slot slot);
 
