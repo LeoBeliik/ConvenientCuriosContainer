@@ -1,2 +1,1 @@
-Added whitelist config option.
-Improved allowed item detection.
+Updated bug with multiloader that prevented sometimes mod to load.
