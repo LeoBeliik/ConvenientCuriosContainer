@@ -18,7 +18,7 @@
 <p align="center">
   <a href="https://github.com/LeoBeliik/ConvenientCuriosContainer/issues" alt="Issues">
         <img src="https://img.shields.io/github/issues/LeoBeliik/ConvenientCuriosContainer.svg?style=for-the-badge" /> </a>
-  <a href="https://github.com/LeoBeliik/ConvenientCuriosContainer/LICENSE.txt" alt="License">
+  <a href="https://github.com/LeoBeliik/ConvenientCuriosContainer/blob/26.1.2/LICENSE.txt" alt="License">
         <img src="https://img.shields.io/github/license/LeoBeliik/ConvenientCuriosContainer.svg?style=for-the-badge" /> </a>  
 </p>
 
